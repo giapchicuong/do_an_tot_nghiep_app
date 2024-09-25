@@ -16,6 +16,9 @@ class AppColors {
   static const Color dark = Color(0xFF272727);
   static const Color primaryBackground = Color(0xFFFFFFFF);
 
+  // Icon colors
+  static const Color star = Color(0xFFFFD336);
+
   // Button colors
   static const Color buttonDisabled = Color(0xFFC4C4C4);
 

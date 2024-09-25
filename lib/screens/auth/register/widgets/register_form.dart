@@ -75,7 +75,7 @@ class RegisterForm extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () => context.push(RouteName.login),
+                onPressed: () => context.go(RouteName.login),
                 child: const Text(AppText.signUp),
               ),
             ),
@@ -91,7 +91,7 @@ class RegisterForm extends StatelessWidget {
                       fontWeight: FontWeight.w400, color: AppColors.subText),
                 ),
                 TextButton(
-                  onPressed: () => context.push(RouteName.login),
+                  onPressed: () => context.go(RouteName.login),
                   child: Text(
                     AppText.signIn,
                     style: context.text.bodyMedium!

@@ -87,7 +87,7 @@ class LoginForm extends StatelessWidget {
                       fontWeight: FontWeight.w400, color: AppColors.subText),
                 ),
                 TextButton(
-                  onPressed: () => context.push(RouteName.register),
+                  onPressed: () => context.go(RouteName.register),
                   child: Text(
                     AppText.signUp,
                     style: context.text.bodyMedium!

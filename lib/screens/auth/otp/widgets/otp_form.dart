@@ -50,7 +50,7 @@ class OtpForm extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  context.push(RouteName.login);
+                  context.go(RouteName.login);
                 },
                 child: const Text(AppText.verify),
               ),
