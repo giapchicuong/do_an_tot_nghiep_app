@@ -53,4 +53,10 @@ class AppSizes {
   // Input field
   static const double inputFieldRadius = 12.0;
   static const double spaceBtwInputFields = 16.0;
+
+  // Products
+  static const double widthProduct = 137.0;
+
+  // Grid view spacing
+  static const double gridViewSpacing = 16.0;
 }

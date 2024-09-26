@@ -5,7 +5,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.6.0-175.0.dev
+  sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -20,7 +20,7 @@ dependencies:
   equatable: ^2.0.5
   flutter_animate: ^4.3.0
   flutter_bloc: ^8.1.3
-  go_router: ^13.0.1
+  go_router: ^14.2.7
   google_fonts: ^6.1.0
   shared_preferences: ^2.2.3
   pinput: ^5.0.0

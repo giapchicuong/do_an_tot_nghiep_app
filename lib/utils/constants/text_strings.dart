@@ -25,4 +25,11 @@ class AppText {
   static const String password = "Mật khẩu";
   static const String rePassword = "Nhập lại mật khẩu";
   static const String userName = "Tên người dùng";
+
+  static const String numberPerson = "Số người đánh giá";
+  static const String trending = "Thịnh hành";
+  static const String favorite = "Yêu thích";
+  static const String productTrending = "Sản phẩm thịnh hành";
+  static const String productFavorite = "Sản phẩm yêu thích";
+  static const String seeAll = "Xem tất cả";
 }
