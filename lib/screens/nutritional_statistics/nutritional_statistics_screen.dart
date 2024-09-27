@@ -1,16 +1,16 @@
-import 'package:do_an_tot_nghiep/common/widgets/products/product_card.dart';
-import 'package:do_an_tot_nghiep/mock_data/products.dart';
-import 'package:do_an_tot_nghiep/utils/constants/sizes.dart';
-import 'package:do_an_tot_nghiep/utils/constants/text_strings.dart';
 import 'package:do_an_tot_nghiep/utils/theme/theme_ext.dart';
 import 'package:flutter/material.dart';
 
 import '../../common/widgets/custom_shapes/containers/arrow_back.dart';
 import '../../common/widgets/layout/grid_layout.dart';
+import '../../common/widgets/products/product_card.dart';
+import '../../mock_data/products.dart';
 import '../../utils/constants/colors.dart';
+import '../../utils/constants/sizes.dart';
+import '../../utils/constants/text_strings.dart';
 
-class ProductsFavoriteScreen extends StatelessWidget {
-  const ProductsFavoriteScreen({super.key});
+class NutritionalStatistics extends StatelessWidget {
+  const NutritionalStatistics({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class ProductsFavoriteScreen extends StatelessWidget {
           const ArrowBack(),
           const Spacer(),
           Text(
-            AppText.productFavorite,
+            AppText.analystNutrition,
             style: context.text.headlineSmall!
                 .copyWith(fontWeight: FontWeight.w600),
           ),
@@ -39,7 +39,7 @@ class ProductsFavoriteScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                AppText.favorite,
+                AppText.analyst,
                 style: context.text.headlineSmall!.copyWith(
                   fontSize: AppSizes.fontSizeLg,
                   fontWeight: FontWeight.w600,

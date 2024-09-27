@@ -32,4 +32,18 @@ class AppText {
   static const String productTrending = "Sản phẩm thịnh hành";
   static const String productFavorite = "Sản phẩm yêu thích";
   static const String seeAll = "Xem tất cả";
+  static const String profile = "Thông tin người dùng";
+  static const String numberReview = "Số lần đánh giá";
+  static const String numberProduct = "Tỉ lệ đánh giá";
+  static const String numberItem = "Tỉ lệ";
+  static const String hisory = "Lịch sử";
+  static const String hisoryReview = "Lịch sử đánh giá";
+  static const String settings = "Cài đặt";
+  static const String logout = "Đăng xuất";
+  static const String versions = "Phiên bản";
+  static const String search = "Tìm kiếm";
+  static const String searchFruist = "Tìm kiếm trái cây";
+  static const String cancel = "Hủy";
+  static const String analystNutrition = "Thống kê dinh dưỡng";
+  static const String analyst = "Thống kê";
 }

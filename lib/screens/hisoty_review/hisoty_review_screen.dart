@@ -9,8 +9,8 @@ import '../../common/widgets/custom_shapes/containers/arrow_back.dart';
 import '../../common/widgets/layout/grid_layout.dart';
 import '../../utils/constants/colors.dart';
 
-class ProductsFavoriteScreen extends StatelessWidget {
-  const ProductsFavoriteScreen({super.key});
+class HistoryReviewScreen extends StatelessWidget {
+  const HistoryReviewScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class ProductsFavoriteScreen extends StatelessWidget {
           const ArrowBack(),
           const Spacer(),
           Text(
-            AppText.productFavorite,
+            AppText.hisoryReview,
             style: context.text.headlineSmall!
                 .copyWith(fontWeight: FontWeight.w600),
           ),
@@ -39,7 +39,7 @@ class ProductsFavoriteScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                AppText.favorite,
+                AppText.hisory,
                 style: context.text.headlineSmall!.copyWith(
                   fontSize: AppSizes.fontSizeLg,
                   fontWeight: FontWeight.w600,

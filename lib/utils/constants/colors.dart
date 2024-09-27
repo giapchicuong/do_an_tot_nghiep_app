@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // App theme colors
-  static const Color primary = Color(0xFF24BAEC);
+  // static const Color primary = Color(0xFF24BAEC);
+  static const Color primary = Color(0xFF50bf6e);
+  // static const Color action = Color(0xFFFF7029);
   static const Color action = Color(0xFFFF7029);
   static const Color frame = Color(0xFFFFFFFF);
 
@@ -38,4 +40,13 @@ class AppColors {
   static const Color softGrey = Color(0xFFF4F4F4);
   static const Color lightGrey = Color(0xFFF9F9F9);
   static const Color white = Color(0xFFFFFFFF);
+
+  static const gradientColor = LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    colors: [
+      Color(0xFF88d160),
+      Color(0xFF59c268),
+    ],
+  );
 }

@@ -1,7 +1,6 @@
 import 'package:do_an_tot_nghiep/utils/constants/text_strings.dart';
 import 'package:do_an_tot_nghiep/utils/theme/theme_ext.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
+import 'package:flutter/material.dart';
 
 import '../../../utils/constants/colors.dart';
 import '../../../utils/constants/sizes.dart';
@@ -36,15 +35,18 @@ class ProductItemWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 286,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(
-                  AppSizes.borderRadiusLg,
-                )),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(image),
+            Hero(
+              tag: image,
+              child: Container(
+                height: 286,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(
+                    AppSizes.borderRadiusLg,
+                  )),
+                  image: DecorationImage(
+                    fit: BoxFit.contain,
+                    image: NetworkImage(image),
+                  ),
                 ),
               ),
             ),
@@ -63,13 +65,14 @@ class ProductItemWidget extends StatelessWidget {
                 Row(
                   children: [
                     const Icon(
-                      CupertinoIcons.shield_fill,
-                      color: AppColors.info,
+                      Icons.shield_outlined,
+                      color: AppColors.primary,
                     ),
                     const SizedBox(width: AppSizes.xs),
                     Text(
                       percent,
                       style: context.text.headlineSmall!.copyWith(
+                        color: AppColors.primary,
                         fontWeight: FontWeight.w300,
                       ),
                     )
@@ -83,14 +86,14 @@ class ProductItemWidget extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const Icon(Iconsax.camera_copy),
+                    const Icon(Icons.camera_alt_outlined),
                     const SizedBox(width: AppSizes.xs),
                     Text(AppText.numberPerson, style: context.text.titleSmall),
                   ],
                 ),
                 Row(
                   children: [
-                    Text(quantityPerson, style: context.text.titleSmall),
+                    Text('$quantityPerson+', style: context.text.titleSmall),
                   ],
                 ),
               ],

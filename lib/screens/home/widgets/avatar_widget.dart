@@ -5,13 +5,22 @@ import '../../../utils/constants/colors.dart';
 import '../../../utils/constants/sizes.dart';
 
 class AvatarWidget extends StatelessWidget {
-  const AvatarWidget({super.key, required this.userName, required this.image});
+  const AvatarWidget({
+    super.key,
+    required this.userName,
+    required this.image,
+    this.width,
+    this.height,
+  });
 
   final String userName, image;
+  final double? width, height;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: width,
+      height: height,
       padding: const EdgeInsets.all(AppSizes.sm),
       decoration: BoxDecoration(
         color: AppColors.grey.withOpacity(0.5),

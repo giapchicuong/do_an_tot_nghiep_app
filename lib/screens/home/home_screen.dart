@@ -11,6 +11,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../configs/router.dart';
 import '../../mock_data/products.dart';
+import '../../mock_data/user.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,13 +29,16 @@ class _HomeScreenState extends State<HomeScreen> {
     context.push(RouteName.productsTrending);
   }
 
-  void _handleGoProductItem(productId) {
-    print(productId);
-    context.push(RouteName.product.replaceFirst(':id', productId));
+  void _handleGoProductItem(productId, product) {
+    context.push(
+      RouteName.product.replaceFirst(':id', productId),
+      extra: product,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final data = userFake;
     return Scaffold(
       backgroundColor: AppColors.primaryBackground,
       body: SafeArea(
@@ -50,10 +54,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // Avatar
-                    const AvatarWidget(
-                      userName: 'Giap Chi Cuong',
-                      image:
-                          'https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1726358400&semt=ais_hybrid',
+                    AvatarWidget(
+                      userName: data.fullName,
+                      image: data.avatar,
                     ),
                     // Button Notification
                     ButtonNotification(
@@ -93,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             percent: data.percent,
                             quantityPerson: data.numberPerson,
                             image: data.image,
-                            onTap: () => _handleGoProductItem(data.id),
+                            onTap: () => _handleGoProductItem(data.id, data),
                           );
                         },
                       ),
@@ -122,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             percent: data.percent,
                             quantityPerson: data.numberPerson,
                             image: data.image,
-                            onTap: () => _handleGoProductItem(data.id),
+                            onTap: () => _handleGoProductItem(data.id, data),
                           );
                         },
                       ),
