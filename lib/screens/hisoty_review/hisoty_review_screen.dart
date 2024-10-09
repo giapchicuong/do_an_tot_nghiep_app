@@ -5,7 +5,6 @@ import 'package:do_an_tot_nghiep/utils/constants/text_strings.dart';
 import 'package:do_an_tot_nghiep/utils/theme/theme_ext.dart';
 import 'package:flutter/material.dart';
 
-import '../../common/widgets/custom_shapes/containers/arrow_back.dart';
 import '../../common/widgets/layout/grid_layout.dart';
 import '../../utils/constants/colors.dart';
 
@@ -20,17 +19,11 @@ class HistoryReviewScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: AppColors.primary.withOpacity(0.15),
         leadingWidth: 80,
-        actions: [
-          const ArrowBack(),
-          const Spacer(),
-          Text(
-            AppText.hisoryReview,
-            style: context.text.headlineSmall!
-                .copyWith(fontWeight: FontWeight.w600),
-          ),
-          const Spacer(),
-          const Spacer(),
-        ],
+        title: Text(
+          AppText.historyReview,
+          style:
+              context.text.headlineSmall!.copyWith(fontWeight: FontWeight.w600),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(

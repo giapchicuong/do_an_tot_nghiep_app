@@ -22,13 +22,13 @@ class _UserScreenState extends State<UserScreen> {
     context.push('${RouteName.user}/${RouteName.history}');
   }
 
-  void _handleGoAnalyst() {
-    context.push('${RouteName.user}/${RouteName.analyst}');
-  }
-
-  void _handleGoSettings() {
-    context.push('${RouteName.user}/${RouteName.settings}');
-  }
+  // void _handleGoAnalyst() {
+  //   context.push('${RouteName.user}/${RouteName.analyst}');
+  // }
+  //
+  // void _handleGoSettings() {
+  //   context.push('${RouteName.user}/${RouteName.settings}');
+  // }
 
   void _handleLogout() {
     context.pushReplacement(RouteName.login);
@@ -121,19 +121,14 @@ class _UserScreenState extends State<UserScreen> {
             Column(
               children: [
                 ListTitleUser(
-                  title: AppText.hisoryReview,
-                  icon: Icons.history_sharp,
+                  title: AppText.vipUser,
+                  icon: Icons.account_tree_outlined,
                   onTap: () => _handleGoHistoryReview(),
                 ),
-                ListTitleUser(
-                  title: AppText.analystNutrition,
-                  icon: Icons.analytics_outlined,
-                  onTap: () => _handleGoAnalyst(),
-                ),
-                ListTitleUser(
+                const ListTitleUser(
                   title: AppText.settings,
                   icon: Icons.settings,
-                  onTap: () => _handleGoSettings(),
+                  // onTap: () => _handleGoSettings(),
                 ),
                 ListTitleUser(
                   title: AppText.logout,

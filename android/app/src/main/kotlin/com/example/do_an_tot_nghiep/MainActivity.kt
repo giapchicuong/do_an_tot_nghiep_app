@@ -1,4 +1,4 @@
-package com.example.do_an_tot_nghiep_app
+package com.example.do_an_tot_nghiep
 
 import io.flutter.embedding.android.FlutterActivity
 

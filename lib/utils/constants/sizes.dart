@@ -57,6 +57,9 @@ class AppSizes {
   // Products
   static const double widthProduct = 137.0;
 
+  // Icon Card
+  static const double widthIconCard = 150.0;
+
   // Grid view spacing
   static const double gridViewSpacing = 16.0;
 }

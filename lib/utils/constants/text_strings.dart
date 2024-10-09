@@ -37,7 +37,8 @@ class AppText {
   static const String numberProduct = "Tỉ lệ đánh giá";
   static const String numberItem = "Tỉ lệ";
   static const String hisory = "Lịch sử";
-  static const String hisoryReview = "Lịch sử đánh giá";
+  static const String vipUser = "Nâng cấp lên tài khoản VIP";
+  static const String historyReview = "Lịch sử đánh giá";
   static const String settings = "Cài đặt";
   static const String logout = "Đăng xuất";
   static const String versions = "Phiên bản";
