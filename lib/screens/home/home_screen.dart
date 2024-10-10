@@ -155,6 +155,7 @@ import 'package:do_an_tot_nghiep/utils/theme/theme_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tflite/tflite.dart';
 
 import '../../mock_data/user.dart';
 
@@ -175,11 +176,19 @@ int getRandomPercentage() {
 class _HomeScreenState extends State<HomeScreen> {
   File? _selectedFile;
   int? randomPercentage;
+  List<dynamic> _output = [];
 
   @override
   void initState() {
-    _pickImageFromCamera();
     super.initState();
+    loadModel().then((value) {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Future _pickImageFromGallaley() async {
@@ -188,9 +197,11 @@ class _HomeScreenState extends State<HomeScreen> {
     if (returnedImage == null) return;
     randomPercentage = getRandomPercentage();
     EasyLoading.show(status: 'Đang tiến hành đánh giá...');
+    await Future.delayed(const Duration(seconds: 3));
     setState(() {
       _selectedFile = File(returnedImage.path);
     });
+    detectImage(_selectedFile!);
     EasyLoading.dismiss();
   }
 
@@ -205,11 +216,52 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _selectedFile = File(returnedImage.path);
     });
+
+    detectImage(_selectedFile!);
     EasyLoading.dismiss();
   }
 
-  
+  // detectImage(File image) async {
+  //   var output = await Tflite.runModelOnImage(
+  //     path: image.path,
+  //     numResults: 2,
+  //     threshold: 0.6,
+  //     imageMean: 127.5,
+  //     imageStd: 127.5,
+  //   );
+  //   print('Kết quả từ mô hình: $output');
+  //   setState(() {
+  //     if (output != null) {
+  //       _output = output;
+  //     } else {
+  //       _output = [];
+  //     }
+  //   });
+  // }
 
+  detectImage(File image) async {
+    var output = await Tflite.runModelOnImage(
+      path: image.path,
+      numResults: 6, // Adjust according to the number of classes
+      threshold: 0.6,
+    );
+    print('Kết quả từ mô hình: $output');
+    setState(() {
+      _output = output ?? [];
+    });
+  }
+
+  loadModel() async {
+    String? res = await Tflite.loadModel(
+      model: 'assets/models/model.tflite',
+      labels: 'assets/models/label.txt',
+    );
+    if (res == 'success') {
+      print('Mô hình đã được tải thành công');
+    } else {
+      print('Lỗi tải mô hình: $res');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -269,11 +321,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 _selectedFile != null
                     ? Center(
                         child: ImageFileCardWidget(
-                          title: 'Độ tươi: $randomPercentage%',
+                          title: _output.isNotEmpty
+                              ? 'Độ tươi: ${_output[0]['label']} $randomPercentage%'
+                              : 'Không có kết quả',
                           file: _selectedFile!,
                         ),
                       )
                     : const SizedBox.shrink(),
+                if (_output.isNotEmpty) Text('Độ tươi: ${_output[0]['label']}'),
               ],
             ),
           ),
