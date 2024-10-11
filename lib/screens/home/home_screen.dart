@@ -186,11 +186,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   Future _pickImageFromGallaley() async {
     final returnedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -221,33 +216,22 @@ class _HomeScreenState extends State<HomeScreen> {
     EasyLoading.dismiss();
   }
 
-  // detectImage(File image) async {
-  //   var output = await Tflite.runModelOnImage(
-  //     path: image.path,
-  //     numResults: 2,
-  //     threshold: 0.6,
-  //     imageMean: 127.5,
-  //     imageStd: 127.5,
-  //   );
-  //   print('Kết quả từ mô hình: $output');
-  //   setState(() {
-  //     if (output != null) {
-  //       _output = output;
-  //     } else {
-  //       _output = [];
-  //     }
-  //   });
-  // }
-
   detectImage(File image) async {
     var output = await Tflite.runModelOnImage(
       path: image.path,
-      numResults: 6, // Adjust according to the number of classes
+      numResults: 2,
       threshold: 0.6,
+      imageMean: 127.5,
+      imageStd: 127.5,
     );
     print('Kết quả từ mô hình: $output');
     setState(() {
-      _output = output ?? [];
+      if (output != null && output.isNotEmpty) {
+        _output = output;
+      } else {
+        _output = [];
+        print('Không có kết quả trả về từ mô hình.');
+      }
     });
   }
 
@@ -261,6 +245,12 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       print('Lỗi tải mô hình: $res');
     }
+  }
+
+  @override
+  void dispose() {
+    Tflite.close();
+    super.dispose();
   }
 
   @override
@@ -322,13 +312,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     ? Center(
                         child: ImageFileCardWidget(
                           title: _output.isNotEmpty
-                              ? 'Độ tươi: ${_output[0]['label']} $randomPercentage%'
+                              ? 'Độ tươi: ${(_output[0]['confidence'] * 100).toStringAsFixed(0)} % - Tên trái cây:  ${_output[0]['label']}'
                               : 'Không có kết quả',
                           file: _selectedFile!,
                         ),
                       )
                     : const SizedBox.shrink(),
-                if (_output.isNotEmpty) Text('Độ tươi: ${_output[0]['label']}'),
               ],
             ),
           ),
