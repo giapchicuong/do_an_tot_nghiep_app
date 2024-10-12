@@ -176,6 +176,7 @@ int getRandomPercentage() {
 class _HomeScreenState extends State<HomeScreen> {
   File? _selectedFile;
   int? randomPercentage;
+  bool isLoading = false;
   List<dynamic> _output = [];
 
   @override
@@ -191,13 +192,10 @@ class _HomeScreenState extends State<HomeScreen> {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (returnedImage == null) return;
     randomPercentage = getRandomPercentage();
-    EasyLoading.show(status: 'Đang tiến hành đánh giá...');
-    await Future.delayed(const Duration(seconds: 3));
     setState(() {
       _selectedFile = File(returnedImage.path);
     });
     detectImage(_selectedFile!);
-    EasyLoading.dismiss();
   }
 
   Future _pickImageFromCamera() async {
@@ -205,18 +203,20 @@ class _HomeScreenState extends State<HomeScreen> {
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (returnedImage == null) return;
     randomPercentage = getRandomPercentage();
-
-    EasyLoading.show(status: 'Đang tiến hành đánh giá...');
-    await Future.delayed(const Duration(seconds: 3));
     setState(() {
       _selectedFile = File(returnedImage.path);
     });
 
     detectImage(_selectedFile!);
-    EasyLoading.dismiss();
   }
 
   detectImage(File image) async {
+    EasyLoading.show(status: 'Đang tiến hành đánh giá...');
+    setState(() {
+      _output = [];
+      isLoading = false;
+    });
+
     var output = await Tflite.runModelOnImage(
       path: image.path,
       numResults: 2,
@@ -232,6 +232,8 @@ class _HomeScreenState extends State<HomeScreen> {
         _output = [];
         print('Không có kết quả trả về từ mô hình.');
       }
+      EasyLoading.dismiss();
+      isLoading = true;
     });
   }
 
@@ -311,9 +313,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 _selectedFile != null
                     ? Center(
                         child: ImageFileCardWidget(
-                          title: _output.isNotEmpty
-                              ? 'Độ tươi: ${(_output[0]['confidence'] * 100).toStringAsFixed(0)} % - Tên trái cây:  ${_output[0]['label']}'
-                              : 'Không có kết quả',
+                          title: !isLoading
+                              ? 'Đang đánh giá...'
+                              : _output.isNotEmpty
+                                  // ? 'Độ tươi: ${(_output[0]['confidence'] * 100).toStringAsFixed(0)} % - Tên trái cây:  ${_output[0]['label']}'
+                                  ? ' ${_output[0]['label']} - ${(_output[0]['confidence'] * 100).toStringAsFixed(0)}% '
+                                  : 'Không có kết quả',
                           file: _selectedFile!,
                         ),
                       )
