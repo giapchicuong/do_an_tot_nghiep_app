@@ -28,10 +28,12 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   readmore: ^3.0.0
   flutter_rating_bar: ^4.0.1
-  image_picker: ^1.1.2
   fl_chart: ^0.69.0
   flutter_easyloading: ^3.0.5
-  tflite: ^1.0.4
+  tflite_flutter: ^0.11.0
+  image_picker: ^1.1.2
+  image: ^3.0.1
+
 
 dev_dependencies:
   flutter_test:
@@ -42,8 +44,11 @@ flutter:
 
   uses-material-design: true
   assets:
-    - assets/models/model.tflite
-    - assets/models/label.txt
+    - assets/images/
+    - assets/images/social_icons/
+    - assets/images/home_screen/
+    - assets/images/loading/
+    - assets/models/
   fonts:
     - family: Poppins
       fonts:

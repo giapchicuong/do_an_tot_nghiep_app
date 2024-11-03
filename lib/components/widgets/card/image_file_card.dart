@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:do_an_tot_nghiep/common/widgets/custom_shapes/containers/rouded_container.dart';
 import 'package:do_an_tot_nghiep/common/widgets/styles/shadow_styles.dart';
 import 'package:do_an_tot_nghiep/utils/theme/theme_ext.dart';
@@ -13,10 +11,12 @@ class ImageFileCardWidget extends StatelessWidget {
     super.key,
     required this.title,
     required this.file,
+    this.isAssetImage = false,
   });
 
   final String title;
-  final File file;
+  final dynamic file;
+  final bool isAssetImage;
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +37,12 @@ class ImageFileCardWidget extends StatelessWidget {
               children: [
                 AspectRatio(
                   aspectRatio: 16 / 9,
-                  child: Image.file(
-                    file,
-                    fit: BoxFit.cover,
-                  ),
+                  child: isAssetImage
+                      ? Image.asset(file)
+                      : Image.file(
+                          file,
+                          fit: BoxFit.cover,
+                        ),
                 ),
                 //   Title
                 Padding(

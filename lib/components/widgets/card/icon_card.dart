@@ -13,10 +13,12 @@ class IconCardWidget extends StatelessWidget {
     required this.title,
     required this.image,
     required this.onTap,
+    this.isNetworkImage = false,
   });
 
   final String title, image;
   final VoidCallback onTap;
+  final bool isNetworkImage;
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +45,7 @@ class IconCardWidget extends StatelessWidget {
                       //   Thumbnail Image
                       AppRoundedImage(
                         imageUrl: image,
+                        isNetworkImage: isNetworkImage,
                         applyImageRadius: true,
                       ),
                     ],

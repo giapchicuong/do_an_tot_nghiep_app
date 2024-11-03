@@ -25,8 +25,7 @@ class RegisterScreen extends StatelessWidget {
       body: const SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(AppSizes.lg),
-          child: SizedBox(
-            width: double.infinity,
+          child: Center(
             child: Column(
               children: [
                 // title login

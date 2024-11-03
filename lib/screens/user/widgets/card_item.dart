@@ -11,9 +11,11 @@ class CardItem extends StatelessWidget {
     this.borderRight = false,
     required this.title,
     required this.number,
+    this.day,
   });
   final bool borderLeft, borderRight;
   final String title, number;
+  final String? day;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class CardItem extends StatelessWidget {
           Text(title, style: context.text.bodyLarge),
           const SizedBox(height: AppSizes.xs),
           Text(
-            number,
+            day == null ? number : '$number - $day ngày ',
             style: context.text.titleLarge!.copyWith(
               color: AppColors.action,
             ),

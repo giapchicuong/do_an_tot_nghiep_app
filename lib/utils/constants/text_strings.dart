@@ -20,11 +20,14 @@ class AppText {
   static const String alreadyHaveAccount = "Bạn có tài khoản?";
   static const String orConnect = "Hoặc kết nối";
   static const String validatePassword = "Mật khẩu phải có 8 chữ số";
-  static const String valueLogin = "Email hoặc Số điện thoại";
   static const String email = "Email";
   static const String password = "Mật khẩu";
   static const String rePassword = "Nhập lại mật khẩu";
   static const String userName = "Tên người dùng";
+  static const String fullName = "Tên đầy đủ";
+  static const String phone = "Số điện thoại";
+  static const String reTry = "Làm mới";
+  static const String registerSuccess = "Đăng ký tài khoản thành công";
 
   static const String numberPerson = "Số người đánh giá";
   static const String trending = "Thịnh hành";
@@ -34,7 +37,7 @@ class AppText {
   static const String seeAll = "Xem tất cả";
   static const String profile = "Thông tin người dùng";
   static const String numberReview = "Số lần đánh giá";
-  static const String numberProduct = "Tỉ lệ đánh giá";
+  static const String accountStatus = "Tài khoản";
   static const String numberItem = "Tỉ lệ";
   static const String hisory = "Lịch sử";
   static const String vipUser = "Nâng cấp lên tài khoản VIP";
@@ -47,4 +50,8 @@ class AppText {
   static const String cancel = "Hủy";
   static const String analystNutrition = "Thống kê dinh dưỡng";
   static const String analyst = "Thống kê";
+  static const String gallery = "Từ thư viện";
+  static const String camera = "Từ camera";
+  static const String loading = "Đang tiến hành...";
+  static const String error = "Có lỗi xảy ra...";
 }

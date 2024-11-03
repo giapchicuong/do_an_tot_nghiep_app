@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:do_an_tot_nghiep/components/widgets/dialog/snack_bar.dart';
 import 'package:do_an_tot_nghiep/configs/router.dart';
 import 'package:do_an_tot_nghiep/utils/constants/colors.dart';
 import 'package:do_an_tot_nghiep/utils/constants/image_strings.dart';
@@ -5,26 +8,71 @@ import 'package:do_an_tot_nghiep/utils/constants/sizes.dart';
 import 'package:do_an_tot_nghiep/utils/theme/theme_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
+import '../../../../features/auth/bloc/auth_bloc.dart';
 import '../../../../utils/constants/text_strings.dart';
 
-class RegisterForm extends StatelessWidget {
+class RegisterForm extends StatefulWidget {
   const RegisterForm({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  State<RegisterForm> createState() => _RegisterFormState();
+}
+
+class _RegisterFormState extends State<RegisterForm> {
+  final _formKey = GlobalKey<FormState>();
+  late final _fullNameController =
+      TextEditingController(text: 'giap chi cuong ');
+  late final _emailController =
+      TextEditingController(text: 'cuong1223sdsd@gmail.com');
+  late final _phoneController = TextEditingController(text: '0354438222');
+  late final _passwordController = TextEditingController(text: '12345');
+  late final _rePasswordController = TextEditingController(text: '12345');
+
+  void _handleSubmit() {
+    if (_formKey.currentState!.validate()) {
+      context.read<AuthBloc>().add(
+            AuthRegisterStarted(
+              fullName: _fullNameController.text,
+              phone: _phoneController.text,
+              email: _emailController.text,
+              password: _passwordController.text,
+            ),
+          );
+    }
+  }
+
+  void _handleRetry() {
+    context.read<AuthBloc>().add(AuthStarted());
+  }
+
+  Widget _buildInitialRegisterWidget() {
     return AutofillGroup(
       child: Form(
+        key: _formKey,
         child: Column(
           children: [
-            // Username
+            // FullName
             TextFormField(
+              controller: _fullNameController,
               decoration: const InputDecoration(
-                labelText: AppText.userName,
+                labelText: AppText.fullName,
+                prefixIcon: Icon(
+                  Iconsax.direct_right_copy,
+                ),
+              ),
+            ),
+            const SizedBox(height: AppSizes.defaultSpace),
+            // Phone
+            TextFormField(
+              controller: _phoneController,
+              decoration: const InputDecoration(
+                labelText: AppText.phone,
                 prefixIcon: Icon(
                   Iconsax.direct_right_copy,
                 ),
@@ -34,8 +82,9 @@ class RegisterForm extends StatelessWidget {
 
             // Email
             TextFormField(
+              controller: _emailController,
               decoration: const InputDecoration(
-                labelText: AppText.valueLogin,
+                labelText: AppText.email,
                 prefixIcon: Icon(
                   Iconsax.direct_right_copy,
                 ),
@@ -45,11 +94,28 @@ class RegisterForm extends StatelessWidget {
 
             // Password
             TextFormField(
+              controller: _passwordController,
               obscureText: true,
               enableSuggestions: false,
               autocorrect: false,
               decoration: const InputDecoration(
                 labelText: AppText.password,
+                prefixIcon: Icon(
+                  Iconsax.direct_right_copy,
+                ),
+                suffixIcon: Icon(Iconsax.eye_slash_copy),
+              ),
+            ),
+            const SizedBox(height: AppSizes.spaceBtwItems),
+
+            // RePassword
+            TextFormField(
+              controller: _rePasswordController,
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
+              decoration: const InputDecoration(
+                labelText: AppText.rePassword,
                 prefixIcon: Icon(
                   Iconsax.direct_right_copy,
                 ),
@@ -75,7 +141,7 @@ class RegisterForm extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () => context.go(RouteName.login),
+                onPressed: () => _handleSubmit(),
                 child: const Text(AppText.signUp),
               ),
             ),
@@ -148,5 +214,101 @@ class RegisterForm extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildInProgressRegisterWidget() {
+    return const Center(child: CircularProgressIndicator());
+  }
+
+  Widget _buildFailureRegisterWidget(message) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(AppSizes.lg),
+          decoration: BoxDecoration(
+            color: AppColors.grey.withOpacity(0.3),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(AppSizes.borderRadiusLg),
+            ),
+          ),
+          child: Column(
+            children: [
+              Text(
+                message,
+                style: context.text.bodyLarge!
+                    .copyWith(color: context.color.error),
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () => _handleRetry(),
+                  label: const Text(AppText.reTry),
+                  icon: const Icon(Icons.refresh),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ]
+          .animate(
+            interval: 50.ms,
+          )
+          .slideX(
+            begin: -0.1,
+            end: 0,
+            curve: Curves.easeInOutCubic,
+            duration: 400.ms,
+          )
+          .fadeIn(
+            curve: Curves.easeInOutCubic,
+            duration: 400.ms,
+          ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _fullNameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    _passwordController.dispose();
+    _rePasswordController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final authState = context.watch<AuthBloc>().state;
+    var registerWidget = (switch (authState) {
+      AuthAuthenticateUnauthenticated() => _buildInitialRegisterWidget(),
+      AuthRegisterInProgress() => _buildInProgressRegisterWidget(),
+      AuthRegisterFailure(message: final msg) =>
+        _buildFailureRegisterWidget(msg),
+      AuthRegisterSuccess() => Container(),
+      _ => Container()
+    });
+
+    registerWidget = BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthRegisterSuccess) {
+          context.go(RouteName.login);
+          AppShowSnackBar.show(
+              context: context, message: AppText.registerSuccess);
+          context.read<AuthBloc>().add(
+                AuthLoginPrefilled(
+                  email: _emailController.text,
+                  password: _passwordController.text,
+                ),
+              );
+        }
+      },
+      child: registerWidget,
+    );
+
+    return registerWidget;
   }
 }

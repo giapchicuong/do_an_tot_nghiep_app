@@ -16,6 +16,7 @@ class AppRoundedImage extends StatelessWidget {
     this.onPressed,
     required this.imageUrl,
     this.borderRadius = AppSizes.md,
+    this.isNetworkImage = false,
   });
 
   final double? width, height;
@@ -27,6 +28,7 @@ class AppRoundedImage extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final VoidCallback? onPressed;
   final double borderRadius;
+  final bool isNetworkImage;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,9 @@ class AppRoundedImage extends StatelessWidget {
               ? BorderRadius.circular(borderRadius)
               : BorderRadius.zero,
           child: Image(
-            image: NetworkImage(imageUrl),
+            image: isNetworkImage
+                ? NetworkImage(imageUrl)
+                : AssetImage(imageUrl) as ImageProvider,
             fit: BoxFit.contain,
           ),
         ),

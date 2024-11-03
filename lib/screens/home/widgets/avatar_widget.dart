@@ -8,12 +8,13 @@ class AvatarWidget extends StatelessWidget {
   const AvatarWidget({
     super.key,
     required this.userName,
-    required this.image,
+    this.image,
     this.width,
     this.height,
   });
 
-  final String userName, image;
+  final String userName;
+  final String? image;
   final double? width, height;
 
   @override
@@ -30,11 +31,13 @@ class AvatarWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: AppSizes.iconSm,
-            backgroundColor: Colors.transparent,
-            backgroundImage: NetworkImage(image),
-          ),
+          image == null
+              ? const SizedBox.shrink()
+              : CircleAvatar(
+                  radius: AppSizes.iconSm,
+                  backgroundColor: Colors.transparent,
+                  backgroundImage: NetworkImage(image ?? ''),
+                ),
           const SizedBox(width: AppSizes.sm),
           Text(
             userName,
