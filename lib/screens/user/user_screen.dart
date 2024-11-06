@@ -32,13 +32,9 @@ class _UserScreenState extends State<UserScreen> {
     context.push('${RouteName.user}/${RouteName.history}');
   }
 
-  // void _handleGoAnalyst() {
-  //   context.push('${RouteName.user}/${RouteName.analyst}');
-  // }
-  //
-  // void _handleGoSettings() {
-  //   context.push('${RouteName.user}/${RouteName.settings}');
-  // }
+  void _handleGoVersion() {
+    context.push('${RouteName.user}/${RouteName.version}');
+  }
 
   void _handleLogout() {
     context.read<AuthBloc>().add(AuthLogoutStarted());
@@ -94,7 +90,7 @@ class _UserScreenState extends State<UserScreen> {
                   ListTitleUser(
                     title: AppText.vipUser,
                     icon: Icons.account_tree_outlined,
-                    onTap: () => _handleGoHistoryReview(),
+                    // onTap: () => _handleGoHistoryReview(),
                   ),
                   const ListTitleUser(
                     title: AppText.settings,
@@ -106,9 +102,10 @@ class _UserScreenState extends State<UserScreen> {
                     icon: Icons.logout,
                     onTap: () => _handleLogout(),
                   ),
-                  const ListTitleUser(
+                  ListTitleUser(
                     title: AppText.versions,
                     icon: Icons.account_tree_sharp,
+                    onTap: () => _handleGoVersion(),
                   ),
                 ],
               )

@@ -12,9 +12,9 @@ class DioClient {
             headers: {'Content-Type': 'application/json; charset=UTF-8'},
             responseType: ResponseType.json,
             receiveDataWhenStatusError: true,
-            connectTimeout: const Duration(seconds: 60000),
-            sendTimeout: const Duration(seconds: 60000),
-            receiveTimeout: const Duration(seconds: 60000),
+            connectTimeout: const Duration(seconds: 1000),
+            sendTimeout: const Duration(seconds: 1000),
+            receiveTimeout: const Duration(seconds: 1000),
           ),
         )..interceptors.addAll([AuthInterceptor()]);
 

@@ -1,6 +1,7 @@
 import 'package:do_an_tot_nghiep/screens/hisoty_review/hisoty_review_screen.dart';
 import 'package:do_an_tot_nghiep/screens/home/home_screen.dart';
 import 'package:do_an_tot_nghiep/screens/user/user_screen.dart';
+import 'package:do_an_tot_nghiep/screens/version/version_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -17,8 +18,9 @@ class RouteName {
   static const String home = '/';
   static const String user = '/user';
 
-  static const String history = '/history';
+  static const String version = 'version';
 
+  static const String history = '/history';
   static const publicRoutes = [
     login,
     register,
@@ -82,9 +84,14 @@ final router = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: RouteName.user,
-              builder: (context, state) => const UserScreen(),
-            ),
+                path: RouteName.user,
+                builder: (context, state) => const UserScreen(),
+                routes: [
+                  GoRoute(
+                    path: RouteName.version,
+                    builder: (context, state) => const VersionScreen(),
+                  ),
+                ]),
           ],
         ),
       ],
