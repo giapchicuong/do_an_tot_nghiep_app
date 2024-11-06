@@ -8,7 +8,7 @@ class DioClient {
   DioClient()
       : _dio = Dio(
           BaseOptions(
-            baseUrl: 'http://192.168.1.27:8080/api/v1/',
+            baseUrl: 'http://192.168.1.5:8080/api/v1/',
             headers: {'Content-Type': 'application/json; charset=UTF-8'},
             responseType: ResponseType.json,
             receiveDataWhenStatusError: true,
