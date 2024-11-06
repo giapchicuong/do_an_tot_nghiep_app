@@ -20,28 +20,23 @@ import '../../features/user/bloc/user_account_infor_get_state.dart';
 import '../../utils/constants/colors.dart';
 import '../../utils/constants/text_strings.dart';
 
-class UserScreen extends StatefulWidget {
+class UserScreen extends StatelessWidget {
   const UserScreen({super.key});
 
   @override
-  State<UserScreen> createState() => _UserScreenState();
-}
-
-class _UserScreenState extends State<UserScreen> {
-  void _handleGoHistoryReview() {
-    context.push('${RouteName.user}/${RouteName.history}');
-  }
-
-  void _handleGoVersion() {
-    context.push('${RouteName.user}/${RouteName.version}');
-  }
-
-  void _handleLogout() {
-    context.read<AuthBloc>().add(AuthLogoutStarted());
-  }
-
-  @override
   Widget build(BuildContext context) {
+    void handleGoUpdateVip() {
+      context.push('${RouteName.user}/${RouteName.updateVip}');
+    }
+
+    void handleGoVersion() {
+      context.push('${RouteName.user}/${RouteName.version}');
+    }
+
+    void handleLogout() {
+      context.read<AuthBloc>().add(AuthLogoutStarted());
+    }
+
     final data = userFake;
     final dio = DioClient();
     final userRepository = UserRepository(userApiClient: UserApiClient(dio));
@@ -58,8 +53,9 @@ class _UserScreenState extends State<UserScreen> {
             const Spacer(),
             Text(
               AppText.profile,
-              style: context.text.headlineSmall!
-                  .copyWith(fontWeight: FontWeight.w600),
+              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
             const Spacer(),
             Container(
@@ -83,14 +79,14 @@ class _UserScreenState extends State<UserScreen> {
           child: Column(
             children: [
               const SizedBox(height: AppSizes.spaceBtwSections),
-              UserAccountDetail(data: data),
+              // UserAccountDetail(data: data),
               const SizedBox(height: AppSizes.spaceBtwItems),
               Column(
                 children: [
                   ListTitleUser(
                     title: AppText.vipUser,
                     icon: Icons.account_tree_outlined,
-                    // onTap: () => _handleGoHistoryReview(),
+                    onTap: () => handleGoUpdateVip(),
                   ),
                   const ListTitleUser(
                     title: AppText.settings,
@@ -100,12 +96,12 @@ class _UserScreenState extends State<UserScreen> {
                   ListTitleUser(
                     title: AppText.logout,
                     icon: Icons.logout,
-                    onTap: () => _handleLogout(),
+                    onTap: () => handleLogout(),
                   ),
                   ListTitleUser(
                     title: AppText.versions,
                     icon: Icons.account_tree_sharp,
-                    onTap: () => _handleGoVersion(),
+                    onTap: () => handleGoVersion(),
                   ),
                 ],
               )

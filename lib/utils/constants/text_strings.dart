@@ -41,6 +41,7 @@ class AppText {
   static const String numberItem = "Tỉ lệ";
   static const String hisory = "Lịch sử";
   static const String vipUser = "Nâng cấp lên tài khoản VIP";
+  static const String optionVip = "Chọn loại tài khoản Vip";
   static const String historyReview = "Lịch sử đánh giá";
   static const String settings = "Cài đặt";
   static const String logout = "Đăng xuất";
@@ -54,4 +55,5 @@ class AppText {
   static const String camera = "Từ camera";
   static const String loading = "Đang tiến hành...";
   static const String error = "Có lỗi xảy ra...";
+  static const String submitSendRating = "Gửi đánh giá";
 }

@@ -73,12 +73,13 @@ class _VersionScreenState extends State<VersionScreen> {
                               '3.0',
                               style: context.text.headlineSmall!.copyWith(
                                 fontSize: AppSizes.fontSizeLg,
+                                color: AppColors.subText,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
                             const SizedBox(height: AppSizes.spaceBtwItems / 2),
                             StarRating(
-                              size: 30,
+                              size: 25,
                               color: AppColors.star,
                               allowHalfRating: true,
                               rating: 3.5,
@@ -88,6 +89,7 @@ class _VersionScreenState extends State<VersionScreen> {
                               '45N',
                               style: context.text.headlineSmall!.copyWith(
                                 fontSize: AppSizes.fontSizeLg,
+                                color: AppColors.subText,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -103,8 +105,10 @@ class _VersionScreenState extends State<VersionScreen> {
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
+                              const SizedBox(
+                                  height: AppSizes.spaceBtwItems / 2),
                               StarRating(
-                                size: 40,
+                                size: 30,
                                 color: AppColors.star,
                                 rating: ratingValue,
                                 allowHalfRating: false,
@@ -114,12 +118,50 @@ class _VersionScreenState extends State<VersionScreen> {
                                   });
                                 },
                               ),
+                              const SizedBox(
+                                  height: AppSizes.spaceBtwItems / 2),
+                              const SizedBox(
+                                  height: AppSizes.spaceBtwItems / 2),
+                              const SizedBox(
+                                  height: AppSizes.spaceBtwItems / 2),
                             ],
                           ),
                         ),
                       ],
                     ),
                   ],
+                ),
+              ),
+              const SizedBox(height: AppSizes.spaceBtwSections),
+              Column(
+                children: [
+                  ListView.builder(
+                      itemCount: 3,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(AppSizes.xs),
+                          child: CheckboxListTile(
+                            dense: true,
+                            visualDensity: VisualDensity.compact,
+                            tileColor: AppColors.primary.withOpacity(0.5),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            title: const Text('Nhanh'),
+                            value: false,
+                            onChanged: (bool? value) {},
+                          ),
+                        );
+                      }),
+                ],
+              ),
+              const SizedBox(height: AppSizes.spaceBtwSections / 2),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () {},
+                  label: const Text(AppText.submitSendRating),
                 ),
               ),
             ],

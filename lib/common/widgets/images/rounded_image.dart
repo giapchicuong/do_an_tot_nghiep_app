@@ -51,7 +51,7 @@ class AppRoundedImage extends StatelessWidget {
             image: isNetworkImage
                 ? NetworkImage(imageUrl)
                 : AssetImage(imageUrl) as ImageProvider,
-            fit: BoxFit.contain,
+            fit: BoxFit.cover,
           ),
         ),
       ),

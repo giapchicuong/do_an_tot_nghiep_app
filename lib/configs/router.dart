@@ -1,5 +1,7 @@
 import 'package:do_an_tot_nghiep/screens/hisoty_review/hisoty_review_screen.dart';
 import 'package:do_an_tot_nghiep/screens/home/home_screen.dart';
+import 'package:do_an_tot_nghiep/screens/update_vip/update_vip_screen.dart';
+import 'package:do_an_tot_nghiep/screens/update_vip_detail/update_vip_detail_screen.dart';
 import 'package:do_an_tot_nghiep/screens/user/user_screen.dart';
 import 'package:do_an_tot_nghiep/screens/version/version_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,6 +21,8 @@ class RouteName {
   static const String user = '/user';
 
   static const String version = 'version';
+  static const String updateVip = 'update-vip';
+  static const String updateVipDetail = 'update-vip-detail/:id';
 
   static const String history = '/history';
   static const publicRoutes = [
@@ -91,6 +95,16 @@ final router = GoRouter(
                     path: RouteName.version,
                     builder: (context, state) => const VersionScreen(),
                   ),
+                  GoRoute(
+                      path: RouteName.updateVip,
+                      builder: (context, state) => const UpdateVipScreen(),
+                      routes: [
+                        GoRoute(
+                          path: RouteName.updateVipDetail,
+                          builder: (context, state) => UpdateVipDetailScreen(
+                              durationId: state.pathParameters['id']!),
+                        ),
+                      ]),
                 ]),
           ],
         ),

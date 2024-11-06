@@ -13,10 +13,15 @@ class ProductCardWidget extends StatelessWidget {
     required this.title,
     required this.image,
     required this.onTap,
+    this.subText,
+    this.header,
+    this.backgroundColor,
   });
 
   final String title, image;
+  final String? subText, header;
   final VoidCallback onTap;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -29,40 +34,49 @@ class ProductCardWidget extends StatelessWidget {
           boxShadow: [AppShadowStyle.verticalProductShadow],
           borderRadius: BorderRadius.circular(AppSizes.borderRadiusLg),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AppRoundedContainer(
-              padding: const EdgeInsets.all(AppSizes.sm),
-              backgroundColor: AppColors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        child: AppRoundedContainer(
+          padding: const EdgeInsets.all(AppSizes.sm),
+          backgroundColor:
+              backgroundColor != null ? backgroundColor! : AppColors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
                 children: [
-                  Stack(
-                    children: [
-                      //   Thumbnail Image
-                      AppRoundedImage(
-                        imageUrl: image,
-                        applyImageRadius: true,
-                      ),
-                    ],
-                  ),
-                  //   Title
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          title,
-                          style: context.text.bodyLarge,
-                        ),
-                      ],
-                    ),
+                  //   Thumbnail Image
+                  AppRoundedImage(
+                    isNetworkImage: true,
+                    imageUrl: image,
+                    applyImageRadius: true,
                   ),
                 ],
               ),
-            ),
-          ],
+
+              //   Title
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (header != null)
+                      Text(
+                        header ?? '',
+                        style: context.text.bodyLarge,
+                      ),
+                    Text(
+                      title,
+                      style: context.text.bodyLarge,
+                    ),
+                    if (subText != null)
+                      Text(
+                        subText ?? '',
+                        style: context.text.bodyLarge,
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
