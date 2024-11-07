@@ -8,7 +8,7 @@ import '../../result_type.dart';
 class UserRepository {
   final UserApiClient userApiClient;
 
-  UserRepository({required this.userApiClient});
+  UserRepository(this.userApiClient);
 
   Future<Result<UserAccountGetSuccessDto>> getAccountInfor() async {
     try {

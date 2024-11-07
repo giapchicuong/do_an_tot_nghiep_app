@@ -1,28 +1,22 @@
-import 'package:do_an_tot_nghiep/features/auth/data/auth_local_data_source.dart';
 import 'package:do_an_tot_nghiep/utils/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import 'configs/http_client.dart';
 import 'configs/router.dart';
 import 'features/auth/bloc/auth_bloc.dart';
-import 'features/auth/data/auth_api_client.dart';
 import 'features/auth/data/auth_repository.dart';
+import 'injection_container.dart';
 
 class App extends StatelessWidget {
-  const App({super.key, required this.sf});
-
-  final SharedPreferences sf;
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
-      create: (context) => AuthRepository(
-          authApiClient: AuthApiClient(DioClient()),
-          authLocalDataSource: AuthLocalDataSource(sf)),
+      create: (context) =>
+          AuthRepository(authApiClient: sl(), authLocalDataSource: sl()),
       child: BlocProvider(
-        create: (context) => AuthBloc(context.read<AuthRepository>()),
+        create: (context) => AuthBloc(sl()),
         child: const AppContent(),
       ),
     );

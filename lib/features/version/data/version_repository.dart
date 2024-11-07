@@ -9,7 +9,7 @@ import 'package:do_an_tot_nghiep/features/version/dtos/user_rating_success_dto.d
 class VersionRepository {
   final VersionApiClient versionApiClient;
 
-  VersionRepository({required this.versionApiClient});
+  VersionRepository(this.versionApiClient);
 
   Future<Result<List<OptionRatingGetSuccessDto>>> getOptionRating() async {
     try {

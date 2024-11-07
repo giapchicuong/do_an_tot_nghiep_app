@@ -1,4 +1,3 @@
-import 'package:do_an_tot_nghiep/configs/http_client.dart';
 import 'package:do_an_tot_nghiep/configs/router.dart';
 import 'package:do_an_tot_nghiep/features/user/bloc/user_account_infor_get_bloc.dart';
 import 'package:do_an_tot_nghiep/features/user/bloc/user_account_infor_get_event.dart';
@@ -17,6 +16,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/auth/bloc/auth_bloc.dart';
 import '../../features/user/bloc/user_account_infor_get_state.dart';
+import '../../injection_container.dart';
 import '../../utils/constants/colors.dart';
 import '../../utils/constants/text_strings.dart';
 
@@ -37,9 +37,7 @@ class UserScreen extends StatelessWidget {
       context.read<AuthBloc>().add(AuthLogoutStarted());
     }
 
-    final data = userFake;
-    final dio = DioClient();
-    final userRepository = UserRepository(userApiClient: UserApiClient(dio));
+    final userRepository = UserRepository(sl<UserApiClient>());
     Widget widget = BlocProvider(
       create: (context) => UserAccountInforGetBloc(userRepository)
         ..add(UserAccountInforGetStarted()),
