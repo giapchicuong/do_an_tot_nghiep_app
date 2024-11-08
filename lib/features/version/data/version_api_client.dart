@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:do_an_tot_nghiep/configs/http_client.dart';
 import 'package:do_an_tot_nghiep/features/version/dtos/option_rating_get_success_dto.dart';
 import 'package:do_an_tot_nghiep/features/version/dtos/total_rating_avg_rating_get_success_dto.dart';
+import 'package:do_an_tot_nghiep/features/version/dtos/user_rating_add_dto.dart';
 import 'package:do_an_tot_nghiep/features/version/dtos/user_rating_success_dto.dart';
 
 class VersionApiClient {
@@ -50,6 +51,27 @@ class VersionApiClient {
       final int ec = response.data['EC'];
       if (ec == 0) {
         return TotalRatingAvgRatingGetSuccessDto.fromJson(response.data['DT']);
+      }
+      throw Exception(response.data['EM']);
+    } on DioException catch (e) {
+      if (e.response != null) {
+        throw Exception(e.response!.data['EM']);
+      } else {
+        throw Exception(e.message);
+      }
+    }
+  }
+
+  Future<List<UserRatingSuccessDto>> addOptionRating(
+      {required UserRatingAdDto data}) async {
+    try {
+      final response = await dio.post(
+        '/reviewVersion/create',
+        data: data.toJson(),
+      );
+      final int ec = response.data['EC'];
+      if (ec == 0) {
+        return listUserRatingSuccessDto(response.data['DT']);
       }
       throw Exception(response.data['EM']);
     } on DioException catch (e) {

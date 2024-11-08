@@ -252,7 +252,6 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     final authState = context.watch<AuthBloc>().state;
-    print(authState);
     var loginWidget = (switch (authState) {
       AuthAuthenticateUnauthenticated() => _buildInitialLoginWidget(context),
       AuthLoginInitial() => _buildInitialLoginWidget(context),

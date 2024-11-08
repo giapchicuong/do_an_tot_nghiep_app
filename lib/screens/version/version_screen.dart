@@ -16,19 +16,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 
 import '../../common/widgets/custom_shapes/containers/arrow_back.dart';
+import '../../components/widgets/dialog/snack_bar.dart';
 import '../../injection_container.dart';
 import '../../utils/constants/colors.dart';
 import '../../utils/constants/sizes.dart';
 import '../../utils/constants/text_strings.dart';
 
-class VersionScreen extends StatefulWidget {
-  const VersionScreen({super.key});
+class VersionScreen extends StatelessWidget {
+  const VersionScreen({super.key, required this.userId});
 
-  @override
-  State<VersionScreen> createState() => _VersionScreenState();
-}
+  final int userId;
 
-class _VersionScreenState extends State<VersionScreen> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -74,9 +72,37 @@ class _VersionScreenState extends State<VersionScreen> {
                 const SizedBox(height: AppSizes.spaceBtwSections / 2),
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton.icon(
-                    onPressed: () {},
-                    label: const Text(AppText.submitSendRating),
+                  child: BlocBuilder<TotalRatingAvgRatingGetBloc,
+                      TotalRatingAvgRatingGetState>(
+                    builder: (context, totalRatingState) {
+                      final state = context.watch<UserRatingGetBloc>().state;
+
+                      if (totalRatingState is TotalRatingAvgRatingGetSuccess) {
+                        final versionId = totalRatingState
+                            .data.versionId; // lấy versionId từ state
+                        if (state is UserRatingGetSuccess) {
+                          if (state.reviewOptions.isNotEmpty &&
+                              state.rating > 0) {
+                            return ElevatedButton.icon(
+                              onPressed: () {
+                                context.read<UserRatingGetBloc>().add(
+                                      UserRatingAddStarted(
+                                        userId: userId,
+                                        versionId: versionId,
+                                      ),
+                                    );
+                              },
+                              label: const Text(AppText.submitSendRating),
+                            );
+                          }
+                        }
+                      }
+                      return ElevatedButton.icon(
+                        onPressed:
+                            null, // nếu state không thành công, disable button
+                        label: const Text(AppText.submitSendRating),
+                      );
+                    },
                   ),
                 ),
                 const SizedBox(height: AppSizes.spaceBtwSections),
@@ -112,34 +138,44 @@ class ListUserRating extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserRatingGetBloc, UserRatingGetState>(
-        builder: (context, state) {
-      if (state is UserRatingGetSuccess) {
-        return ListView.builder(
-            itemCount: state.data.length,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              final data = state.data[index];
-              return UserRatingItem(
-                email: data.email,
-                versionName: data.nameVersion,
-                star: data.rating.toDouble(),
-                createdAt: data.createdAt,
-                option: data.reviewOptions,
-              );
-            });
-      }
-      if (state is UserRatingGetInProgress) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      }
-      if (state is UserRatingGetFailure) {
-        return Center(child: Text(state.msg));
-      }
-      return Container();
-    });
+    return BlocListener<UserRatingGetBloc, UserRatingGetState>(
+      listener: (context, state) {
+        if (state is UserRatingGetSuccess) {
+          if (state.isRating) {
+            AppShowSnackBar.show(
+                context: context, message: AppText.ratingComent);
+          }
+        }
+      },
+      child: BlocBuilder<UserRatingGetBloc, UserRatingGetState>(
+          builder: (context, state) {
+        if (state is UserRatingGetSuccess) {
+          return ListView.builder(
+              itemCount: state.data.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                final data = state.data[index];
+                return UserRatingItem(
+                  email: data.email,
+                  versionName: data.nameVersion,
+                  star: data.rating.toDouble(),
+                  createdAt: data.createdAt,
+                  option: data.reviewOptions,
+                );
+              });
+        }
+        if (state is UserRatingGetInProgress) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (state is UserRatingGetFailure) {
+          return Center(child: Text(state.msg));
+        }
+        return Container();
+      }),
+    );
   }
 }
 
@@ -225,6 +261,11 @@ class InforVersion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int rating = 0;
+    final state = context.watch<UserRatingGetBloc>().state;
+    if (state is UserRatingGetSuccess) {
+      rating = state.rating;
+    }
     Widget buildInitialInforVersion(
         BuildContext context, TotalRatingAvgRatingGetSuccessDto data) {
       return Column(
@@ -301,9 +342,14 @@ class InforVersion extends StatelessWidget {
                           StarRating(
                             size: 30,
                             color: AppColors.star,
-                            rating: 0,
+                            rating: rating.toDouble(),
                             allowHalfRating: false,
-                            onRatingChanged: (rating) {},
+                            onRatingChanged: (rating) {
+                              context.read<UserRatingGetBloc>().add(
+                                    UserRatingPostStarted(
+                                        rating: rating.toInt()),
+                                  );
+                            },
                           ),
                           const SizedBox(height: AppSizes.spaceBtwInputFields),
                         ],
@@ -371,6 +417,12 @@ class OptionRating extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               final data = datas[index];
+              bool isChecked = false;
+              final state = context.watch<UserRatingGetBloc>().state;
+              if (state is UserRatingGetSuccess) {
+                isChecked = state.reviewOptions.any(
+                    (option) => data.reviewOptionId == option.reviewOptionId);
+              }
               return Padding(
                 padding: const EdgeInsets.all(AppSizes.xs),
                 child: CheckboxListTile(
@@ -381,8 +433,13 @@ class OptionRating extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15.0),
                   ),
                   title: Text(data.reviewOptionName),
-                  value: false,
-                  onChanged: (bool? value) {},
+                  value: isChecked,
+                  onChanged: (bool? value) {
+                    context.read<UserRatingGetBloc>().add(
+                          UserRatingPostStarted(
+                              reviewOptionid: data.reviewOptionId),
+                        );
+                  },
                 ),
               );
             }),

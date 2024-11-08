@@ -93,7 +93,15 @@ final router = GoRouter(
                 routes: [
                   GoRoute(
                     path: RouteName.version,
-                    builder: (context, state) => const VersionScreen(),
+                    builder: (context, state) {
+                      final authBloc = context.read<AuthBloc>().state;
+                      if (authBloc is AuthAuthenticatedSuccess) {
+                        return VersionScreen(
+                          userId: authBloc.data.userId,
+                        );
+                      }
+                      return Container();
+                    },
                   ),
                   GoRoute(
                       path: RouteName.updateVip,
