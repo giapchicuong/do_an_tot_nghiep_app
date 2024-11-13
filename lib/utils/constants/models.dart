@@ -1,5 +1,5 @@
 class AppModel {
-  static const String urlModel = 'assets/models/model3.tflite';
+  static const String urlModel = 'assets/models/model4.tflite';
   static const List<String> classLabels = [
     'apples100',
     'banana0',

@@ -1,3 +1,4 @@
+import 'package:do_an_tot_nghiep/features/user/dtos/user_duration_option_success_dto.dart';
 import 'package:do_an_tot_nghiep/screens/hisoty_review/hisoty_review_screen.dart';
 import 'package:do_an_tot_nghiep/screens/home/home_screen.dart';
 import 'package:do_an_tot_nghiep/screens/update_vip/update_vip_screen.dart';
@@ -105,13 +106,30 @@ final router = GoRouter(
                   ),
                   GoRoute(
                       path: RouteName.updateVip,
-                      builder: (context, state) => const UpdateVipScreen(),
+                      builder: (context, state) {
+                        final authBloc = context.read<AuthBloc>().state;
+                        if (authBloc is AuthAuthenticatedSuccess) {
+                          if (authBloc.data.durations?.durationId != null) {
+                            return UpdateVipScreen(
+                              durationId: authBloc.data.durations!.durationId,
+                            );
+                          }
+                        }
+                        return const UpdateVipScreen();
+                      },
                       routes: [
                         GoRoute(
-                          path: RouteName.updateVipDetail,
-                          builder: (context, state) => UpdateVipDetailScreen(
-                              durationId: state.pathParameters['id']!),
-                        ),
+                            path: RouteName.updateVipDetail,
+                            builder: (context, state) {
+                              UserDurationOptionSuccessDto data =
+                                  state.extra as UserDurationOptionSuccessDto;
+                              return UpdateVipDetailScreen(
+                                durationId: data.durationId,
+                                durationTime: data.durationTime,
+                                durationName: data.durationName,
+                                durationPrice: data.durationPrice,
+                              );
+                            })
                       ]),
                 ]),
           ],

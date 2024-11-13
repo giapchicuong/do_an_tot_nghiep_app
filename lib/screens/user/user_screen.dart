@@ -8,6 +8,7 @@ import 'package:do_an_tot_nghiep/mock_data/user.dart';
 import 'package:do_an_tot_nghiep/screens/user/widgets/card_item.dart';
 import 'package:do_an_tot_nghiep/screens/user/widgets/list_title_user.dart';
 import 'package:do_an_tot_nghiep/utils/constants/sizes.dart';
+import 'package:do_an_tot_nghiep/utils/formatters/formatter.dart';
 import 'package:do_an_tot_nghiep/utils/theme/theme_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -77,7 +78,7 @@ class UserScreen extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: AppSizes.spaceBtwSections),
-              // UserAccountDetail(data: data),
+              const UserAccountDetail(),
               const SizedBox(height: AppSizes.spaceBtwItems),
               Column(
                 children: [
@@ -139,10 +140,7 @@ class UserScreen extends StatelessWidget {
 class UserAccountDetail extends StatelessWidget {
   const UserAccountDetail({
     super.key,
-    required this.data,
   });
-
-  final User data;
 
   @override
   Widget build(BuildContext context) {
@@ -215,7 +213,7 @@ class UserAccountDetail extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 50.0,
-                  backgroundImage: NetworkImage(data.avatar),
+                  backgroundImage: NetworkImage(userFake.avatar),
                   backgroundColor: Colors.transparent,
                 ),
                 const SizedBox(height: AppSizes.md),
@@ -244,7 +242,8 @@ class UserAccountDetail extends StatelessWidget {
                 Expanded(
                   child: CardItem(
                     title: AppText.accountStatus,
-                    number: userAccountGetSuccessDto.statusName.toString(),
+                    number: AppFormatter.formatLevelAccount(
+                        userAccountGetSuccessDto.statusName),
                     day: userAccountGetSuccessDto.timeInDayEnd.toString(),
                     borderRight: true,
                   ),

@@ -89,7 +89,8 @@ class ReviewFruits extends StatelessWidget {
         ),
       ImagePredictSuccess() => ImageFileCardWidget(
           title: imagePredictBloc.result,
-          file: imagePredictBloc.image,
+          file: imagePredictBloc.imageRemove,
+          isMemoryImage: true,
         ),
       ImagePredictFailure() => const ImageFileCardWidget(
           title: AppText.error,
