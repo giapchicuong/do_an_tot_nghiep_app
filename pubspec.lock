@@ -264,14 +264,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_webview_plugin_ios_android:
-    dependency: transitive
+  flutter_zalopay_sdk:
+    dependency: "direct main"
     description:
-      name: flutter_webview_plugin_ios_android
-      sha256: "2a084ac5d2e9fd1788bd76794b79055199fe40621c306a14e29ab8fa7f96466b"
+      name: flutter_zalopay_sdk
+      sha256: b93a57c770197e985b5fd0c0af2ba6034f5a11215948eaff369f29ffcb20b8e8
       url: "https://pub.dev"
     source: hosted
-    version: "0.3.13+12"
+    version: "0.1.14"
   fluttertoast:
     dependency: "direct main"
     description:
@@ -313,7 +313,7 @@ packages:
     source: hosted
     version: "6.2.1"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       sha256: b9c29a161230ee03d3ccf545097fccd9b87a5264228c5d348202e0f0c28f9010
@@ -693,6 +693,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.0"
+  sprintf:
+    dependency: "direct main"
+    description:
+      name: sprintf
+      sha256: "1fc9ffe69d4df602376b52949af107d8f5703b77cda567c4d7d86a0693120f23"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.0"
   stack_trace:
     dependency: transitive
     description:
@@ -774,7 +782,7 @@ packages:
     source: hosted
     version: "1.1.0"
   url_launcher:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: url_launcher
       sha256: "9d06212b1362abc2f0f0d78e6f09f726608c74e3b9462e8368bb03314aa8d603"
@@ -853,14 +861,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "14.2.5"
-  vnpay_flutter:
-    dependency: "direct main"
-    description:
-      name: vnpay_flutter
-      sha256: "236bae066f50c731fc52899267c5bf9dd3c5d8606cef2026f46526b926be1ff3"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.3"
   web:
     dependency: transitive
     description:
