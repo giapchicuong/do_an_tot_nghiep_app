@@ -28,7 +28,7 @@ class AppText {
   static const String phone = "Số điện thoại";
   static const String reTry = "Làm mới";
   static const String registerSuccess = "Đăng ký tài khoản thành công";
-  static const String ratingComent = "Đánh giá phiên bản thành công";
+  static const String ratingComent = "Đánh giá App thành công";
 
   static const String numberPerson = "Số người đánh giá";
   static const String trending = "Thịnh hành";
