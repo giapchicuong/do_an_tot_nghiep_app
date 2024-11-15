@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
+import 'package:remove_bg/remove_bg.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 
 import '../../../utils/constants/models.dart';
@@ -48,7 +49,15 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
       PerformPredictionEvent event, Emitter<ImagePredictState> emit) async {
     emit(ImagePredictLoading());
     try {
-      Uint8List imageData = await event.imageFile.readAsBytes();
+      final removeBgResponse = await Remove().bg(
+        event.imageFile,
+        privateKey: "TmQWBRvP7jUWM1k5pRtZnYX3",
+        onUploadProgressCallback: (progressValue) {
+          emit(ImagePredictLoading());
+        },
+      );
+      Uint8List imageData = removeBgResponse!;
+
       img.Image? image = img.decodeImage(imageData);
       if (image == null) throw Exception("Invalid image");
 
@@ -57,7 +66,12 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
       var output = List.generate(1, (index) => List.filled(41, 0.0));
 
       _interpreter.run(input, output);
-      _parseOutput(output, event.imageFile, emit);
+      _parseOutput(
+        output,
+        event.imageFile,
+        imageData,
+        emit,
+      );
     } catch (e) {
       emit(ImagePredictFailure("Prediction failed"));
     }
@@ -82,13 +96,14 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
     );
   }
 
-  void _parseOutput(
-      List<List<double>> output, File image, Emitter<ImagePredictState> emit) {
+  void _parseOutput(List<List<double>> output, File image,
+      Uint8List? imageRemove, Emitter<ImagePredictState> emit) {
     int predictedClass =
         output[0].indexOf(output[0].reduce((a, b) => a > b ? a : b));
     String fruitType = AppModel.classLabels[predictedClass];
     emit(
-      ImagePredictSuccess(AppFormatter.formatLabelModel(fruitType), image),
+      ImagePredictSuccess(
+          AppFormatter.formatLabelModel(fruitType), image, imageRemove),
     );
   }
 }

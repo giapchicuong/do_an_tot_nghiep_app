@@ -9,6 +9,26 @@ class AppFormatter {
     return (value * 10).floorToDouble() / 10;
   }
 
+  static String formatLevelAccount(String value) {
+    switch (value) {
+      case 'Nomal':
+        return 'Thường';
+      default:
+        return value;
+    }
+  }
+
+  static String formatTime(String value) {
+    switch (value) {
+      case 'months':
+        return 'tháng';
+      case 'days':
+        return 'ngày';
+      default:
+        return value;
+    }
+  }
+
   static String formatLabelModel(data) {
     String name = '';
     String number = '';
@@ -36,5 +56,14 @@ class AppFormatter {
       String format = 'dd/MM/yyyy';
       return DateFormat(format).format(timestamp);
     }
+  }
+
+  static String formatVNDCurrency(int amount) {
+    final format = NumberFormat.currency(
+      locale: 'vi_VN',
+      symbol: 'đ',
+      decimalDigits: 0,
+    );
+    return format.format(amount);
   }
 }

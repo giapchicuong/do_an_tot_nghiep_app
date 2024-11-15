@@ -12,14 +12,17 @@ class ImageFileCardWidget extends StatelessWidget {
     required this.title,
     required this.file,
     this.isAssetImage = false,
+    this.isMemoryImage = false,
   });
 
   final String title;
   final dynamic file;
   final bool isAssetImage;
+  final bool isMemoryImage;
 
   @override
   Widget build(BuildContext context) {
+    print(file);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(1),
@@ -39,10 +42,12 @@ class ImageFileCardWidget extends StatelessWidget {
                   aspectRatio: 16 / 9,
                   child: isAssetImage
                       ? Image.asset(file)
-                      : Image.file(
-                          file,
-                          fit: BoxFit.cover,
-                        ),
+                      : isMemoryImage
+                          ? Image.memory(file)
+                          : Image.file(
+                              file,
+                              fit: BoxFit.cover,
+                            ),
                 ),
                 //   Title
                 Padding(

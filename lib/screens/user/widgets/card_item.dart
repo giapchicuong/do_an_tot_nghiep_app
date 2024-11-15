@@ -35,9 +35,8 @@ class CardItem extends StatelessWidget {
           const SizedBox(height: AppSizes.xs),
           Text(
             day == null ? number : '$number - $day ngày ',
-            style: context.text.titleLarge!.copyWith(
-              color: AppColors.action,
-            ),
+            style: context.text.titleLarge!
+                .copyWith(color: AppColors.action, fontSize: 15),
           )
         ],
       ),

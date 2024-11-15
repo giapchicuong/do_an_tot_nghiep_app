@@ -39,6 +39,12 @@ dependencies:
   timeago: any
   timeago_flutter: ^3.6.0
   intl: ^0.19.0
+  remove_bg: ^0.0.3
+  flutter_zalopay_sdk: ^0.1.14
+  http: ^1.2.2
+  sprintf: ^7.0.0
+  url_launcher: ^6.1.7
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
