@@ -129,10 +129,6 @@ class _NavigationMenuState extends State<NavigationMenu> {
             //   label: '',
             // ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.history),
-              label: '',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.person),
               label: '',
             ),

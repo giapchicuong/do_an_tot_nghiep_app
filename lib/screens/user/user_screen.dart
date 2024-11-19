@@ -1,3 +1,4 @@
+import 'package:do_an_tot_nghiep/common/widgets/custom_shapes/containers/arrow_back.dart';
 import 'package:do_an_tot_nghiep/configs/router.dart';
 import 'package:do_an_tot_nghiep/features/user/bloc/user_account_infor_get_bloc.dart';
 import 'package:do_an_tot_nghiep/features/user/bloc/user_account_infor_get_event.dart';
@@ -49,6 +50,9 @@ class UserScreen extends StatelessWidget {
           backgroundColor: AppColors.primary.withOpacity(0.15),
           leadingWidth: 80,
           actions: [
+            const Spacer(),
+            const ArrowBack(),
+            const Spacer(),
             const Spacer(),
             Text(
               AppText.profile,

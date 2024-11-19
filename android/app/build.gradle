@@ -39,6 +39,15 @@ android {
     }
 }
 
+dependencies {
+    implementation(name: 'zpdk-release-28052021', ext: 'aar')
+}
+repositories {
+    flatDir {
+        dirs 'libs'  // Make sure this points to your libs directory where the .aar file is
+    }
+}
+
 flutter {
     source = "../.."
 }

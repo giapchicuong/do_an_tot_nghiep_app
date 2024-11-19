@@ -6,7 +6,7 @@ class AppGridLayout extends StatelessWidget {
   const AppGridLayout({
     super.key,
     required this.itemCount,
-    this.mainAxisExtent = 150,
+    this.mainAxisExtent = 170,
     required this.itemBuilder,
   });
   final int itemCount;

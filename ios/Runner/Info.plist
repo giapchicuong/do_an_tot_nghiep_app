@@ -40,10 +40,10 @@
         			<key>CFBundleTypeRole</key>
         			<string>Editor</string>
         			<key>CFBundleURLName</key>
-        			<string>com.flutterzalopay.flutterZaloSdkExample</string>
+        			<string>org.reactjs.native.example.demozpdk</string>
         			<key>CFBundleURLSchemes</key>
         			<array>
-        				<string>zp-redirect-2553</string>
+        				<string>demozpdk</string>
         			</array>
         		</dict>
         	</array>

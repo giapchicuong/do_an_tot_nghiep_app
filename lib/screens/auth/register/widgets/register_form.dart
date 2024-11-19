@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:do_an_tot_nghiep/components/widgets/dialog/snack_bar.dart';
 import 'package:do_an_tot_nghiep/configs/router.dart';
 import 'package:do_an_tot_nghiep/utils/constants/colors.dart';
@@ -26,11 +24,10 @@ class RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
-  late final _fullNameController =
-      TextEditingController(text: 'giap chi cuong ');
+  late final _fullNameController = TextEditingController(text: 'khach hang ');
   late final _emailController =
-      TextEditingController(text: 'cuong1223sdsd@gmail.com');
-  late final _phoneController = TextEditingController(text: '0354438222');
+      TextEditingController(text: 'khachang4@gmail.com');
+  late final _phoneController = TextEditingController(text: '0444444444');
   late final _passwordController = TextEditingController(text: '12345');
   late final _rePasswordController = TextEditingController(text: '12345');
 

@@ -2,7 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:do_an_tot_nghiep/configs/http_client.dart';
 import 'package:do_an_tot_nghiep/features/user/dtos/user_account_get_success_dto.dart';
 import 'package:do_an_tot_nghiep/features/user/dtos/user_duration_option_success_dto.dart';
+import 'package:do_an_tot_nghiep/features/user/dtos/user_payment_dto.dart';
 import 'package:do_an_tot_nghiep/features/user/dtos/user_payment_method_success_dto.dart';
+import 'package:do_an_tot_nghiep/features/user/dtos/user_payment_success_dto.dart';
 
 class UserApiClient {
   final DioClient dio;
@@ -60,6 +62,26 @@ class UserApiClient {
     } on DioException catch (e) {
       if (e.response != null) {
         throw Exception(e.response!.data['EM']);
+      } else {
+        throw Exception(e.message);
+      }
+    }
+  }
+
+  Future<UserPaymentSuccessDto> postUserPayment(
+      {required UserPaymentDto data}) async {
+    try {
+      final response = await dio.post('/payment', data: data.toJson());
+      final int returnCode = response.data['return_code'];
+      if (response.statusCode == 200) {
+        if (returnCode == 1) {
+          return UserPaymentSuccessDto.fromJson(response.data);
+        }
+      }
+      throw Exception(response.data['return_message']);
+    } on DioException catch (e) {
+      if (e.response != null) {
+        throw Exception(e.response!.data['return_message']);
       } else {
         throw Exception(e.message);
       }

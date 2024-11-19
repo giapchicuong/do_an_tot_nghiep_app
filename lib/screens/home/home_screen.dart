@@ -1,4 +1,5 @@
 import 'package:do_an_tot_nghiep/components/widgets/card/icon_card.dart';
+import 'package:do_an_tot_nghiep/configs/router.dart';
 import 'package:do_an_tot_nghiep/screens/home/widgets/avatar_widget.dart';
 import 'package:do_an_tot_nghiep/screens/home/widgets/button_notification_widget.dart';
 import 'package:do_an_tot_nghiep/screens/home/widgets/introduction_text_widget.dart';
@@ -9,6 +10,7 @@ import 'package:do_an_tot_nghiep/utils/constants/text_strings.dart';
 import 'package:do_an_tot_nghiep/utils/theme/theme_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../components/widgets/card/image_file_card.dart';
 import '../../features/home/bloc/image_predict_bloc.dart';
@@ -42,10 +44,20 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       // Avatar
                       fullName == null
-                          ? const AvatarWidget(userName: AppText.signIn)
-                          : AvatarWidget(
-                              userName: fullName ?? '',
-                              image: data.avatar,
+                          ? GestureDetector(
+                              onTap: () {
+                                context.push(RouteName.login);
+                              },
+                              child:
+                                  const AvatarWidget(userName: AppText.signIn))
+                          : GestureDetector(
+                              onTap: () {
+                                context.push(RouteName.user);
+                              },
+                              child: AvatarWidget(
+                                userName: fullName ?? '',
+                                image: data.avatar,
+                              ),
                             ),
                       // Button Notification
                       ButtonNotification(
