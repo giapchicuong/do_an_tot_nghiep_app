@@ -1,102 +1,121 @@
 package com.example.do_an_tot_nghiep_app
+
+import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import androidx.annotation.NonNull
+import io.flutter.Log
+import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.EventChannel
-import androidx.annotation.NonNull
-import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.embedding.android.FlutterActivity
+import vn.zalopay.sdk.Environment
+import vn.zalopay.sdk.ZaloPayError
 import vn.zalopay.sdk.ZaloPaySDK
 import vn.zalopay.sdk.listeners.PayOrderListener
-import vn.zalopay.sdk.ZaloPayError
 
 class MainActivity: FlutterActivity() {
-    private val CHANNEL = "flutter.native/channelPayOrder"
-    private var _eventSink: EventChannel.EventSink? = null  // Khai báo _eventSink
+    private val eventChannel = "flutter.native/eventPayOrder"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        configureFlutterEngine(flutterEngine!!)
+        ZaloPaySDK.init(2554, Environment.SANDBOX) // Merchant AppID
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        Log.d("newIntent", intent.toString())
+        ZaloPaySDK.getInstance().onResult(intent)
+    }
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
-        // MethodChannel for handling payment
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
+        val channelPayOrder = "flutter.native/channelPayOrder"
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, channelPayOrder)
             .setMethodCallHandler { call, result ->
                 if (call.method == "payOrder") {
+                    val tagSuccess = "[OnPaymentSucceeded]"
+                    val tagError = "[onPaymentError]"
+                    val tagCanel = "[onPaymentCancel]"
                     val token = call.argument<String>("zptoken")
-                    token?.let {
-                        ZaloPaySDK.getInstance().payOrder(this@MainActivity, it, "demozpdk://app", object : PayOrderListener {
+
+                    ZaloPaySDK.getInstance().payOrder(
+                        this@MainActivity,
+                        token !!,
+                        "demozpdk://app",
+                        object : PayOrderListener {
                             override fun onPaymentCanceled(zpTransToken: String?, appTransID: String?) {
+                                Log.d(tagCanel, String.format("[TransactionId]: %s, [appTransID]: %s", zpTransToken, appTransID))
                                 result.success("User Canceled")
+                                sendEventToFlutter("User Canceled", 4)
                             }
 
-                            override fun onPaymentError(zaloPayErrorCode: ZaloPayError?, zpTransToken: String?, appTransID: String?) {
-                                result.success("Payment failed")
+                            override fun onPaymentError(
+                                zaloPayErrorCode: ZaloPayError?,
+                                zpTransToken: String?,
+                                appTransID: String?
+                            ) {
+                                // Null checks to avoid the Parcel error
+                                if (zpTransToken == null || appTransID == null) {
+                                    Log.e(tagError, "Transaction or AppTransID is null")
+                                    result.success("Payment failed")
+                                    sendEventToFlutter("Payment failed", 3)
+                                } else {
+                                    Log.d(tagError, String.format("[zaloPayErrorCode]: %s, [zpTransToken]: %s, [appTransID]: %s", zaloPayErrorCode.toString(), zpTransToken, appTransID))
+                                    result.success("Payment failed")
+                                    sendEventToFlutter("Payment failed", 3)
+                                }
                             }
+
 
                             override fun onPaymentSucceeded(transactionId: String, transToken: String, appTransID: String?) {
+                                Log.d(tagSuccess, String.format("[TransactionId]: %s, [TransToken]: %s, [appTransID]: %s", transactionId, transToken, appTransID))
                                 result.success("Payment Success")
+                                sendEventToFlutter("Payment Success", 1)
                             }
                         })
-                    } ?: run {
-                        result.success("Token is null")
-                    }
+                } else {
+                    Log.d("[METHOD CALLER] ", "Method Not Implemented")
+                    result.success("Payment failed")
                 }
             }
 
-        // EventChannel for streaming payment status
-        EventChannel(flutterEngine.dartExecutor.binaryMessenger, "flutter.native/eventPayOrder")
+        // Event Channel to send events to Flutter
+        EventChannel(flutterEngine.dartExecutor.binaryMessenger, eventChannel)
             .setStreamHandler(object : EventChannel.StreamHandler {
-                override fun onListen(arguments: Any?, eventSink: EventChannel.EventSink) {
-                    _eventSink = eventSink
+                override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
+                    // Handle the event stream; send events to Flutter
+                    events?.success("EventChannel Initialized") // You can send any initialization event here.
                 }
 
                 override fun onCancel(arguments: Any?) {
-                    _eventSink = null
+                    // Handle cancellation of the event stream
                 }
             })
+    }
 
-        // Another MethodChannel for handling payment
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL)
-            .setMethodCallHandler { call, result ->
-                if (call.method == "payOrder") {
-                    val token = call.argument<String>("zptoken")
-                    token?.let {
-                        ZaloPaySDK.getInstance().payOrder(this@MainActivity, it, "demozpdk://app", object : PayOrderListener {
-                            override fun onPaymentCanceled(zpTransToken: String?, appTransID: String?) {
-                                _eventSink?.success(mapOf(
-                                    "errorCode" to "PAYMENTCANCELED",
-                                    "zpTransToken" to zpTransToken,
-                                    "appTransID" to appTransID
-                                ))
-                            }
+    private fun sendEventToFlutter(message: String, errorCode: Int) {
+        val event = HashMap<String, Any>()
+        event["message"] = message
+        event["errorCode"] = errorCode
 
-                            override fun onPaymentError(zaloPayErrorCode: ZaloPayError?, zpTransToken: String?, appTransID: String?) {
-                                _eventSink?.success(mapOf(
-                                    "errorCode" to "PAYMENTERROR",
-                                    "zpTransToken" to zpTransToken,
-                                    "appTransID" to appTransID
-                                ))
-                            }
-
-                            override fun onPaymentSucceeded(transactionId: String, transToken: String, appTransID: String?) {
-                                _eventSink?.success(mapOf(
-                                    "errorCode" to "PAYMENTCOMPLETE",
-                                    "zpTransToken" to transToken,
-                                    "transactionId" to transactionId,
-                                    "appTransID" to appTransID
-                                ))
-                            }
-                        })
-                    } ?: run {
-                        result.success("Token is null")
-                    }
-                } else {
-                    result.success("Method Not Implemented")
+        // Check if flutterEngine is not null
+        flutterEngine?.let {
+            val channel = EventChannel(it.dartExecutor.binaryMessenger, eventChannel)
+            channel.setStreamHandler(object : EventChannel.StreamHandler {
+                override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
+                    events?.success(event) // Send the event data to Flutter side
                 }
-            }
+
+                override fun onCancel(arguments: Any?) {
+                    // Handle cancellation of event stream
+                }
+            })
+        } ?: run {
+            Log.e("EventChannel", "Flutter engine is null")
+        }
     }
 }

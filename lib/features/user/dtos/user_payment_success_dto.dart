@@ -6,6 +6,7 @@ class UserPaymentSuccessDto {
   String zpTransToken;
   String orderUrl;
   String orderToken;
+  String appTransId;
 
   UserPaymentSuccessDto({
     required this.returnCode,
@@ -15,6 +16,7 @@ class UserPaymentSuccessDto {
     required this.zpTransToken,
     required this.orderUrl,
     required this.orderToken,
+    required this.appTransId,
   });
 
   factory UserPaymentSuccessDto.fromJson(Map<String, dynamic> json) =>
@@ -26,5 +28,6 @@ class UserPaymentSuccessDto {
         zpTransToken: json["zp_trans_token"],
         orderUrl: json["order_url"],
         orderToken: json["order_token"],
+        appTransId: json["app_trans_id"],
       );
 }
