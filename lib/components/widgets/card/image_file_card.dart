@@ -22,7 +22,6 @@ class ImageFileCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(file);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(1),

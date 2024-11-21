@@ -26,6 +26,7 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
     try {
       _interpreter = await Interpreter.fromAsset(AppModel.urlModel);
     } catch (e) {
+      print("Error Load Model ${e}");
       emit(ImagePredictFailure("Failed to load model"));
     }
   }
@@ -51,7 +52,7 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
     try {
       final removeBgResponse = await Remove().bg(
         event.imageFile,
-        privateKey: "TmQWBRvP7jUWM1k5pRtZnYX3",
+        privateKey: "VAcHahQfpQab565WMp7v8RQ4",
         onUploadProgressCallback: (progressValue) {
           emit(ImagePredictLoading());
         },
@@ -63,7 +64,8 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
 
       img.Image resizedImage = img.copyResize(image, width: 224, height: 224);
       var input = _processImage(resizedImage);
-      var output = List.generate(1, (index) => List.filled(41, 0.0));
+      var output = List.generate(
+          1, (index) => List.filled(AppModel.classLabels.length, 0.0));
 
       _interpreter.run(input, output);
       _parseOutput(
@@ -73,6 +75,7 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
         emit,
       );
     } catch (e) {
+      print("Error Prediction Model ${e}");
       emit(ImagePredictFailure("Prediction failed"));
     }
   }
@@ -101,6 +104,9 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
     int predictedClass =
         output[0].indexOf(output[0].reduce((a, b) => a > b ? a : b));
     String fruitType = AppModel.classLabels[predictedClass];
+    print('Name Fruits: $fruitType');
+    print('Name Custom Fruits: ${AppFormatter.formatLabelModel(fruitType)}');
+
     emit(
       ImagePredictSuccess(
           AppFormatter.formatLabelModel(fruitType), image, imageRemove),

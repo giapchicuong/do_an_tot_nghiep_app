@@ -92,7 +92,6 @@ class ReviewFruits extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final imagePredictBloc = context.watch<ImagePredictBloc>().state;
-
     var imagePredictWidget = switch (imagePredictBloc) {
       ImagePredictLoading() => const ImageFileCardWidget(
           title: AppText.loading,

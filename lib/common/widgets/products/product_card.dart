@@ -44,6 +44,7 @@ class ProductCardWidget extends StatelessWidget {
                 children: [
                   //   Thumbnail Image
                   AppRoundedImage(
+                    fit: BoxFit.cover,
                     isNetworkImage: true,
                     imageUrl: image,
                     applyImageRadius: true,

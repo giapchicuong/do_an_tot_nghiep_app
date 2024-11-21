@@ -7,5 +7,6 @@ class AppImages {
   static const String gallery = "assets/images/home_screen/gallery.png";
   static const String camera = "assets/images/home_screen/camera.png";
   static const String loading = "assets/images/loading/loading.jpg";
+  static const String success = "assets/images/loading/success.png";
   static const String error = "assets/images/loading/error.png";
 }

@@ -28,14 +28,14 @@ class _LoginFormState extends State<LoginForm> {
   late final _emailController = TextEditingController(
     text: (switch (_authState) {
       AuthLoginInitial(email: final email) => email,
-      _ => 'admin@gmail.com'
+      _ => ''
     }),
   );
 
   late final _passwordController = TextEditingController(
     text: (switch (_authState) {
       AuthLoginInitial(password: final password) => password,
-      _ => '12345'
+      _ => ''
     }),
   );
 

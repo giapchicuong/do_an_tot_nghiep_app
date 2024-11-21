@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:do_an_tot_nghiep/features/user/data/user_api_client.dart';
 import 'package:do_an_tot_nghiep/features/user/dtos/user_account_get_success_dto.dart';
+import 'package:do_an_tot_nghiep/features/user/dtos/user_check_status_payment_success_dto.dart';
 import 'package:do_an_tot_nghiep/features/user/dtos/user_duration_option_success_dto.dart';
 import 'package:do_an_tot_nghiep/features/user/dtos/user_payment_method_success_dto.dart';
 import 'package:do_an_tot_nghiep/features/user/dtos/user_payment_success_dto.dart';
@@ -58,7 +59,7 @@ class UserRepository {
         methodId: methodId,
       ));
 
-      await _launchUrl(data.orderUrl);
+      await openlaunchUrl(data.orderUrl);
 
       return Success(data);
     } catch (e) {
@@ -67,7 +68,20 @@ class UserRepository {
     }
   }
 
-  Future<void> _launchUrl(String url) async {
+  Future<Result<UserCheckStatusPaymentSuccessDto>> postCheckStatusPayment({
+    required String appTransId,
+  }) async {
+    try {
+      final data =
+          await userApiClient.postCheckStatusPayment(appTransId: appTransId);
+      return Success(data);
+    } catch (e) {
+      log('$e');
+      return Failure('$e');
+    }
+  }
+
+  Future<void> openlaunchUrl(String url) async {
     if (await canLaunchUrl(Uri.parse(url))) {
       await launchUrl(Uri.parse(url));
     } else {

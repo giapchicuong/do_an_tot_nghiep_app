@@ -9,8 +9,8 @@ class UserPaymentPostBloc
     extends Bloc<UserPaymentPostEvent, UserPaymentPostState> {
   UserPaymentPostBloc(this.userRepository) : super(UserPaymentPostInitial()) {
     on<UserPaymentPostStarted>(_onUserPaymentPostStarted);
-    on<UserPaymentPostSuccessEvent>(_onUserPaymentPostSuccessEvent);
-    on<UserPaymentPostFailureEvent>(_onUserPaymentPostFailureEvent);
+    on<UserCheckStatusPaymentPostStarted>(_onUserCheckStatusPayment);
+    on<UserPaymentOpenUrlPostStarted>(_onUserPaymentOpenUrl);
   }
 
   final UserRepository userRepository;
@@ -30,13 +30,34 @@ class UserPaymentPostBloc
     });
   }
 
-  void _onUserPaymentPostSuccessEvent(UserPaymentPostSuccessEvent event,
+  void _onUserCheckStatusPayment(UserCheckStatusPaymentPostStarted event,
       Emitter<UserPaymentPostState> emit) async {
-    emit(UserPaymentPostResultSuccess());
+    emit(UserCheckStatusPaymentInProgress());
+    final result = await userRepository.postCheckStatusPayment(
+        appTransId: event.appTransId);
+
+    return (switch (result) {
+      Success(data: final data) when data.returnCode == 1 => emit(
+          UserCheckStatusPaymentSuccess(
+              isPaymentSuccess: true, isWaiting: false),
+        ),
+      Success(data: final data) when data.returnCode == 2 => emit(
+          UserCheckStatusPaymentSuccess(
+              isPaymentSuccess: false, isWaiting: false),
+        ),
+      Success(data: final data) when data.returnCode == 3 => emit(
+          UserCheckStatusPaymentSuccess(
+              isPaymentSuccess: false, isWaiting: true),
+        ),
+      Success() => UserCheckStatusPaymentSuccess(
+          isPaymentSuccess: false, isWaiting: false),
+      Failure() => emit(UserCheckStatusPaymentFailure(result.message)),
+    });
   }
 
-  void _onUserPaymentPostFailureEvent(UserPaymentPostFailureEvent event,
+  void _onUserPaymentOpenUrl(UserPaymentOpenUrlPostStarted event,
       Emitter<UserPaymentPostState> emit) async {
-    emit(UserPaymentPostResultFailure(event.msg));
+    emit(UserPaymentPostInProgress());
+    await userRepository.openlaunchUrl(event.orderUrl);
   }
 }

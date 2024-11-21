@@ -1,13 +1,5 @@
 abstract class UserPaymentPostEvent {}
 
-class UserPaymentPostSuccessEvent extends UserPaymentPostEvent {}
-
-class UserPaymentPostFailureEvent extends UserPaymentPostEvent {
-  final String msg;
-
-  UserPaymentPostFailureEvent({required this.msg});
-}
-
 class UserPaymentPostStarted extends UserPaymentPostEvent {
   final int durationId;
   final int methodId;
@@ -16,4 +8,16 @@ class UserPaymentPostStarted extends UserPaymentPostEvent {
     required this.durationId,
     required this.methodId,
   });
+}
+
+class UserCheckStatusPaymentPostStarted extends UserPaymentPostEvent {
+  final String appTransId;
+
+  UserCheckStatusPaymentPostStarted({required this.appTransId});
+}
+
+class UserPaymentOpenUrlPostStarted extends UserPaymentPostEvent {
+  final String orderUrl;
+
+  UserPaymentOpenUrlPostStarted({required this.orderUrl});
 }
