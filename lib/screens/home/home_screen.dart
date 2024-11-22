@@ -1,5 +1,7 @@
 import 'package:do_an_tot_nghiep/components/widgets/card/icon_card.dart';
 import 'package:do_an_tot_nghiep/configs/router.dart';
+import 'package:do_an_tot_nghiep/features/home/data/home_api_client.dart';
+import 'package:do_an_tot_nghiep/features/home/data/home_repository.dart';
 import 'package:do_an_tot_nghiep/screens/home/widgets/avatar_widget.dart';
 import 'package:do_an_tot_nghiep/screens/home/widgets/button_notification_widget.dart';
 import 'package:do_an_tot_nghiep/screens/home/widgets/introduction_text_widget.dart';
@@ -16,18 +18,24 @@ import '../../components/widgets/card/image_file_card.dart';
 import '../../features/home/bloc/image_predict_bloc.dart';
 import '../../features/home/bloc/image_predict_event.dart';
 import '../../features/home/bloc/image_predict_state.dart';
+import '../../injection_container.dart';
 import '../../mock_data/user.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key, this.fullName});
+  const HomeScreen(
+      {super.key, this.fullName, this.isVip, required this.isAuth});
   final String? fullName;
+  final bool isAuth;
+  final bool? isVip;
 
   @override
   Widget build(BuildContext context) {
     final data = userFake;
 
     return BlocProvider(
-      create: (context) => ImagePredictBloc()..add(LoadModelEvent()),
+      create: (context) =>
+          ImagePredictBloc(HomeRepository(homeApiClient: sl<HomeApiClient>()))
+            ..add(LoadModelEvent()),
       child: Scaffold(
         backgroundColor: AppColors.primaryBackground,
         body: SafeArea(
@@ -73,7 +81,15 @@ class HomeScreen extends StatelessWidget {
                   Text('Chọn ảnh để tiến hành đánh giá',
                       style: context.text.titleLarge),
                   const SizedBox(height: AppSizes.spaceBtwItems),
-                  const ReviewFruits(),
+                  if (fullName != null)
+                    ReviewFruits(
+                      isAuth: isAuth,
+                      isVip: isVip!,
+                    ),
+                  if (fullName == null)
+                    ReviewFruits(
+                      isAuth: isAuth,
+                    ),
                 ],
               ),
             ),
@@ -87,7 +103,12 @@ class HomeScreen extends StatelessWidget {
 class ReviewFruits extends StatelessWidget {
   const ReviewFruits({
     super.key,
+    this.isVip = false,
+    required this.isAuth,
   });
+
+  final bool isVip;
+  final bool isAuth;
 
   @override
   Widget build(BuildContext context) {
@@ -112,6 +133,11 @@ class ReviewFruits extends StatelessWidget {
     };
 
     void handleImagePredict(bool isCamera) {
+      if (isVip) {
+        context
+            .read<ImagePredictBloc>()
+            .add(PickImageFromGalleryEvent(isCamera: isCamera, isVip: isVip));
+      }
       context
           .read<ImagePredictBloc>()
           .add(PickImageFromGalleryEvent(isCamera: isCamera));

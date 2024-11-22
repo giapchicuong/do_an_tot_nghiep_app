@@ -3,7 +3,7 @@ class UserAccountSuccessDto {
   final int userId;
   final int groupId;
   final String accessToken;
-  final bool isAdmin;
+  final bool isVip;
   final Durations? durations;
 
   UserAccountSuccessDto({
@@ -11,7 +11,7 @@ class UserAccountSuccessDto {
     required this.userId,
     required this.groupId,
     required this.accessToken,
-    required this.isAdmin,
+    required this.isVip,
     required this.durations,
   });
 
@@ -21,7 +21,7 @@ class UserAccountSuccessDto {
           userId: json['userId'],
           groupId: json['groupId'],
           accessToken: json['accessToken'],
-          isAdmin: json['isAdmin'],
+          isVip: json['isVip'],
           durations: json['durations'] != null
               ? Durations.fromJson(json['durations'])
               : null);

@@ -31,6 +31,14 @@ class UserScreen extends StatelessWidget {
       context.push('${RouteName.user}/${RouteName.updateVip}');
     }
 
+    void handleGoHistory() {
+      context.push('${RouteName.user}/${RouteName.history}');
+    }
+
+    void handleGoHistoryUpdateVip() {
+      context.push('${RouteName.user}/${RouteName.historyUpdateVip}');
+    }
+
     void handleGoVersion() {
       context.push('${RouteName.user}/${RouteName.version}');
     }
@@ -50,9 +58,7 @@ class UserScreen extends StatelessWidget {
           backgroundColor: AppColors.primary.withOpacity(0.15),
           leadingWidth: 80,
           actions: [
-            const Spacer(),
             const ArrowBack(),
-            const Spacer(),
             const Spacer(),
             Text(
               AppText.profile,
@@ -61,21 +67,24 @@ class UserScreen extends StatelessWidget {
                   ),
             ),
             const Spacer(),
-            Container(
-              margin: const EdgeInsets.only(left: 20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
-              ),
-              child: IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.edit,
-                  color: AppColors.primary,
-                ),
-              ),
-            ),
-            const SizedBox(width: 20),
+            const Spacer(),
+            const Spacer(),
+
+            // Container(
+            //   margin: const EdgeInsets.only(left: 20),
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(10),
+            //     color: Colors.white,
+            //   ),
+            //   child: IconButton(
+            //     onPressed: () {},
+            //     icon: const Icon(
+            //       Icons.edit,
+            //       color: AppColors.primary,
+            //     ),
+            //   ),
+            // ),
+            // const SizedBox(width: 20),
           ],
         ),
         body: SingleChildScrollView(
@@ -87,14 +96,19 @@ class UserScreen extends StatelessWidget {
               Column(
                 children: [
                   ListTitleUser(
+                    title: AppText.historyReview,
+                    icon: Icons.history,
+                    onTap: () => handleGoHistory(),
+                  ),
+                  ListTitleUser(
+                    title: AppText.historyVip,
+                    icon: Icons.manage_history,
+                    onTap: () => handleGoHistoryUpdateVip(),
+                  ),
+                  ListTitleUser(
                     title: AppText.vipUser,
                     icon: Icons.account_tree_outlined,
                     onTap: () => handleGoUpdateVip(),
-                  ),
-                  const ListTitleUser(
-                    title: AppText.settings,
-                    icon: Icons.settings,
-                    // onTap: () => _handleGoSettings(),
                   ),
                   ListTitleUser(
                     title: AppText.logout,

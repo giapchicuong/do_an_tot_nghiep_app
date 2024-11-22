@@ -42,6 +42,29 @@ class AppFormatter {
     return '${name.capitalize()} - $number%';
   }
 
+  static String formatLabelModelGetName(data) {
+    String name = '';
+    String number = '';
+    data.split('').forEach((ch) {
+      if (AppHelpFunction.checkIsNumeric(ch)) {
+        return number = number + ch;
+      } else {
+        return name = name + ch;
+      }
+    });
+    return name.capitalize();
+  }
+
+  static String formatLabelModelGetNumber(data) {
+    String number = '';
+    data.split('').forEach((ch) {
+      if (AppHelpFunction.checkIsNumeric(ch)) {
+        return number = number + ch;
+      }
+    });
+    return number;
+  }
+
   static String getFormattedDateDayMonthYear(DateTime timestamp) {
     timeago.setLocaleMessages('vi', timeago.ViMessages());
 
@@ -58,6 +81,13 @@ class AppFormatter {
     }
   }
 
+  static String getFormattedDateDayMonthYearVN(DateTime timestamp) {
+    timeago.setLocaleMessages('vi', timeago.ViMessages());
+
+    String format = 'dd/MM/yyyy';
+    return DateFormat(format).format(timestamp);
+  }
+
   static String formatVNDCurrency(int amount) {
     final format = NumberFormat.currency(
       locale: 'vi_VN',
@@ -65,5 +95,9 @@ class AppFormatter {
       decimalDigits: 0,
     );
     return format.format(amount);
+  }
+
+  static String extractFilenameFromUrl(String url) {
+    return url.substring(url.lastIndexOf('/') + 1);
   }
 }

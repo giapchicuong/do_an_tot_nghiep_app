@@ -16,11 +16,13 @@ class ProductCardWidget extends StatelessWidget {
     this.subText,
     this.header,
     this.backgroundColor,
+    this.showImage = true,
   });
 
   final String title, image;
   final String? subText, header;
   final VoidCallback onTap;
+  final bool showImage;
   final Color? backgroundColor;
 
   @override
@@ -40,17 +42,18 @@ class ProductCardWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Stack(
-                children: [
-                  //   Thumbnail Image
-                  AppRoundedImage(
-                    fit: BoxFit.cover,
-                    isNetworkImage: true,
-                    imageUrl: image,
-                    applyImageRadius: true,
-                  ),
-                ],
-              ),
+              if (showImage)
+                Stack(
+                  children: [
+                    //   Thumbnail Image
+                    AppRoundedImage(
+                      fit: BoxFit.cover,
+                      isNetworkImage: true,
+                      imageUrl: image,
+                      applyImageRadius: true,
+                    ),
+                  ],
+                ),
 
               //   Title
               Padding(

@@ -29,6 +29,7 @@ class AppText {
   static const String reTry = "Làm mới";
   static const String registerSuccess = "Đăng ký tài khoản thành công";
   static const String ratingComent = "Đánh giá thành công";
+  static const String dialogUpdate = "Bạn đã nâng cấp VIP";
 
   static const String numberPerson = "Số người đánh giá";
   static const String trending = "Thịnh hành";
@@ -44,6 +45,7 @@ class AppText {
   static const String vipUser = "Nâng cấp lên tài khoản VIP";
   static const String optionVip = "Chọn loại tài khoản Vip";
   static const String historyReview = "Lịch sử đánh giá";
+  static const String historyVip = "Lịch sử nâng cấp tài khoản";
   static const String settings = "Cài đặt";
   static const String logout = "Đăng xuất";
   static const String versions = "Phiên bản";

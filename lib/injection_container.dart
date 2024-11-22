@@ -1,4 +1,6 @@
 import 'package:do_an_tot_nghiep/features/auth/data/auth_api_client.dart';
+import 'package:do_an_tot_nghiep/features/history/data/history_api_client.dart';
+import 'package:do_an_tot_nghiep/features/home/data/home_api_client.dart';
 import 'package:do_an_tot_nghiep/features/user/data/user_api_client.dart';
 import 'package:do_an_tot_nghiep/features/user/data/user_repository.dart';
 import 'package:do_an_tot_nghiep/features/version/data/version_api_client.dart';
@@ -29,6 +31,8 @@ Future<void> setupLocator() async {
   sl.registerLazySingleton(() => AuthApiClient(sl<DioClient>()));
   sl.registerLazySingleton(() => UserApiClient(sl<DioClient>()));
   sl.registerLazySingleton(() => VersionApiClient(sl<DioClient>()));
+  sl.registerLazySingleton(() => HomeApiClient(sl<DioClient>()));
+  sl.registerLazySingleton(() => HistoryApiClient(sl<DioClient>()));
 
   // Local Data Source
   sl.registerLazySingleton(() => AuthLocalDataSource(sl<SharedPreferences>()));

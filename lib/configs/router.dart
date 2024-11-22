@@ -1,4 +1,5 @@
 import 'package:do_an_tot_nghiep/features/user/dtos/user_duration_option_success_dto.dart';
+import 'package:do_an_tot_nghiep/screens/hisoty_review/hisoty_review_screen.dart';
 import 'package:do_an_tot_nghiep/screens/home/home_screen.dart';
 import 'package:do_an_tot_nghiep/screens/payment/payment_screen.dart';
 import 'package:do_an_tot_nghiep/screens/update_vip/update_vip_screen.dart';
@@ -12,6 +13,7 @@ import 'package:go_router/go_router.dart';
 import '../features/auth/bloc/auth_bloc.dart';
 import '../screens/auth/login/login_screen.dart';
 import '../screens/auth/register/register_screen.dart';
+import '../screens/history_update_account/history_update_account.dart';
 import '../screens/navigation_menu.dart';
 import '../screens/payment_result/payment_result.dart';
 
@@ -28,7 +30,8 @@ class RouteName {
   static const String payment = 'payment';
   static const String paymentResult = '/paymentResult';
 
-  static const String history = '/history';
+  static const String history = 'history';
+  static const String historyUpdateVip = 'history-update-vip';
   static const publicRoutes = [
     login,
     register,
@@ -81,9 +84,15 @@ final router = GoRouter(
         builder: (context, state) {
           final authBloc = context.read<AuthBloc>().state;
           if (authBloc is AuthAuthenticatedSuccess) {
-            return HomeScreen(fullName: authBloc.data.email);
+            return HomeScreen(
+              isAuth: true,
+              fullName: authBloc.data.email,
+              isVip: authBloc.data.isVip,
+            );
           }
-          return const HomeScreen();
+          return const HomeScreen(
+            isAuth: false,
+          );
         }),
     GoRoute(
         path: RouteName.user,
@@ -99,6 +108,18 @@ final router = GoRouter(
                 );
               }
               return Container();
+            },
+          ),
+          GoRoute(
+            path: RouteName.history,
+            builder: (context, state) {
+              return const HistoryReviewScreen();
+            },
+          ),
+          GoRoute(
+            path: RouteName.historyUpdateVip,
+            builder: (context, state) {
+              return const HistoryUpdateAccountScreen();
             },
           ),
           GoRoute(
@@ -136,7 +157,7 @@ final router = GoRouter(
                     durationId: durationId,
                   );
                 },
-              )
+              ),
             ],
           ),
         ]),
@@ -153,9 +174,12 @@ final router = GoRouter(
                 builder: (context, state) {
                   final authBloc = context.read<AuthBloc>().state;
                   if (authBloc is AuthAuthenticatedSuccess) {
-                    return HomeScreen(fullName: authBloc.data.email);
+                    return HomeScreen(
+                      fullName: authBloc.data.email,
+                      isAuth: true,
+                    );
                   }
-                  return const HomeScreen();
+                  return const HomeScreen(isAuth: false);
                 }),
           ],
         ),
