@@ -112,16 +112,19 @@ class HistoryUpdateAccountContent extends StatelessWidget {
                               style: context.text.headlineSmall,
                             ),
                             const SizedBox(height: 5),
-                            Text(
-                              'Gói vip: ${data.durationTime} ${AppFormatter.formatTime(data.durationName)}',
-                              style: context.text.bodyLarge,
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              'Thời gian: ${AppFormatter.getFormattedDateDayMonthYearVN(data.timeStart)} -  ${AppFormatter.getFormattedDateDayMonthYearVN(data.timeEnd)}',
-                              style: context.text.bodyLarge,
-                            ),
-                            const SizedBox(height: 5),
+                            if (data.durationTime == 'forever')
+                              Text(
+                                'Gói vip: ${data.durationTime} ${AppFormatter.formatTime(data.durationName)}',
+                                style: context.text.bodyLarge,
+                              ),
+                            if (data.durationTime == 'forever')
+                              const SizedBox(height: 5),
+                            if (data.timeEnd != null)
+                              Text(
+                                'Thời gian: ${AppFormatter.getFormattedDateDayMonthYearVN(data.timeStart)} -  ${AppFormatter.getFormattedDateDayMonthYearVN(data.timeEnd!)}',
+                                style: context.text.bodyLarge,
+                              ),
+                            if (data.timeEnd != null) const SizedBox(height: 5),
                             Text(
                               'Phương thức: ${data.methodName}',
                               style: context.text.bodyLarge,

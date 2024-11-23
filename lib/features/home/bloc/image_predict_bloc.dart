@@ -77,7 +77,10 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
         if (image == null) throw Exception("Invalid image");
 
         img.Image resizedImage = img.copyResize(image, width: 224, height: 224);
-        var input = _processImage(resizedImage);
+        // var input = preprocessImage(resizedImage);
+        // var input = preprocessImage(resizedImage, "tf", "channels_last");
+        var input = preprocessImage(resizedImage, "tf", "channels_last");
+
         var output = List.generate(
             1, (index) => List.filled(AppModel.classLabels.length, 0.0));
 
@@ -103,7 +106,103 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
     }
   }
 
-  List<List<List<List<double>>>> _processImage(img.Image image) {
+  // ban đầu
+  // List<List<List<List<double>>>> _processImage(img.Image image) {
+  //   return List.generate(
+  //     1,
+  //     (_) => List.generate(
+  //       image.height,
+  //       (j) => List.generate(
+  //         image.width,
+  //         (k) {
+  //           var pixel = image.getPixel(k, j);
+  //           var r = ((pixel >> 16) & 0xFF) / 255.0;
+  //           var g = ((pixel >> 8) & 0xFF) / 255.0;
+  //           var b = (pixel & 0xFF) / 255.0;
+  //           return [r, g, b];
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  // List<List<List<List<double>>>> preprocessImage(
+  //     img.Image image, String mode, String dataFormat) {
+  //   // Chuẩn bị các tham số mean và std
+  //   List<double> mean;
+  //   List<double>? std;
+  //
+  //   if (mode == "tf") {
+  //     mean = [0.0, 0.0, 0.0];
+  //     std = null;
+  //   } else if (mode == "torch") {
+  //     mean = [0.485, 0.456, 0.406];
+  //     std = [0.229, 0.224, 0.225];
+  //   } else {
+  //     mean = [103.939, 116.779, 123.68];
+  //     std = null;
+  //   }
+  //
+  //   return List.generate(
+  //     1,
+  //     (_) => List.generate(
+  //       image.height,
+  //       (j) => List.generate(
+  //         image.width,
+  //         (k) {
+  //           var pixel = image.getPixel(k, j);
+  //           double r = ((pixel >> 16) & 0xFF).toDouble();
+  //           double g = ((pixel >> 8) & 0xFF).toDouble();
+  //           double b = (pixel & 0xFF).toDouble();
+  //           // Chuyển đổi RGB -> BGR nếu cần
+  //           if (mode != "tf" && dataFormat == "channels_last") {
+  //             var temp = r;
+  //             r = b;
+  //             b = temp;
+  //           }
+  //
+  //           // Chuẩn hóa giá trị pixel
+  //           r = _normalizePixel(r, mean[0], std != null ? std[0] : null, mode);
+  //           g = _normalizePixel(g, mean[1], std != null ? std[1] : null, mode);
+  //           b = _normalizePixel(b, mean[2], std != null ? std[2] : null, mode);
+  //
+  //           return [r, g, b];
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
+  //
+  // double _normalizePixel(double pixel, double mean, double? std, String mode) {
+  //   if (mode == "tf") {
+  //     return (pixel / 127.5) - 1.0; // Scale -1 to 1
+  //   } else if (mode == "torch") {
+  //     pixel /= 255.0; // Scale 0 to 1
+  //     return (pixel - mean) / (std ?? 1.0); // Normalize by mean and std
+  //   } else {
+  //     return pixel - mean; // Zero-center by mean pixel
+  //   }
+  // }
+
+  List<List<List<List<double>>>> preprocessImage(
+      img.Image image, String mode, String dataFormat) {
+    List<double> mean;
+    List<double>? std;
+
+    // Xác định mean và std theo chế độ
+    if (mode == "tf") {
+      mean = [0.0, 0.0, 0.0];
+      std = null;
+    } else if (mode == "torch") {
+      mean = [0.485, 0.456, 0.406];
+      std = [0.229, 0.224, 0.225];
+    } else {
+      // "caffe"
+      mean = [103.939, 116.779, 123.68];
+      std = null;
+    }
+
+    // Xử lý ảnh đầu vào
     return List.generate(
       1,
       (_) => List.generate(
@@ -111,15 +210,41 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
         (j) => List.generate(
           image.width,
           (k) {
+            // Lấy giá trị RGB từ pixel
             var pixel = image.getPixel(k, j);
-            var r = ((pixel >> 16) & 0xFF) / 255.0;
-            var g = ((pixel >> 8) & 0xFF) / 255.0;
-            var b = (pixel & 0xFF) / 255.0;
+            double r = ((pixel >> 16) & 0xFF).toDouble();
+            double g = ((pixel >> 8) & 0xFF).toDouble();
+            double b = (pixel & 0xFF).toDouble();
+
+            // Chuyển đổi RGB -> BGR nếu mode là "caffe" và dataFormat là "channels_last"
+            if (mode == "caffe" && dataFormat == "channels_last") {
+              var temp = r;
+              r = b;
+              b = temp;
+            }
+
+            // Chuẩn hóa từng kênh màu
+            r = _normalizePixel(r, mean[0], std != null ? std[0] : null, mode);
+            g = _normalizePixel(g, mean[1], std != null ? std[1] : null, mode);
+            b = _normalizePixel(b, mean[2], std != null ? std[2] : null, mode);
+
             return [r, g, b];
           },
         ),
       ),
     );
+  }
+
+  double _normalizePixel(double pixel, double mean, double? std, String mode) {
+    if (mode == "tf") {
+      return (pixel / 127.5) - 1.0; // Scale -1 to 1
+    } else if (mode == "torch") {
+      pixel /= 255.0; // Scale 0 to 1
+      return (pixel - mean) / (std ?? 1.0); // Normalize by mean and std
+    } else {
+      // "caffe"
+      return pixel - mean; // Zero-center by mean pixel
+    }
   }
 
   void _parseOutput(

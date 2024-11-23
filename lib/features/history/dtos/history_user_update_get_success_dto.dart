@@ -10,7 +10,7 @@ class HistoryUserUpdateSuccessDto {
   int durationTime;
   String durationName;
   DateTime timeStart;
-  DateTime timeEnd;
+  DateTime? timeEnd;
   DateTime createdAt;
 
   HistoryUserUpdateSuccessDto({
@@ -32,7 +32,8 @@ class HistoryUserUpdateSuccessDto {
         durationTime: json["durationTime"],
         durationName: json["durationName"],
         timeStart: DateTime.parse(json["timeStart"]),
-        timeEnd: DateTime.parse(json["timeEnd"]),
+        timeEnd:
+            json["timeEnd"] != null ? DateTime.parse(json["timeEnd"]) : null,
         createdAt: DateTime.parse(json["createdAt"]),
       );
 }
