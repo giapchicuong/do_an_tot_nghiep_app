@@ -85,14 +85,10 @@ final router = GoRouter(
           final authBloc = context.read<AuthBloc>().state;
           if (authBloc is AuthAuthenticatedSuccess) {
             return HomeScreen(
-              isAuth: true,
               fullName: authBloc.data.email,
-              isVip: authBloc.data.isVip,
             );
           }
-          return const HomeScreen(
-            isAuth: false,
-          );
+          return const HomeScreen();
         }),
     GoRoute(
         path: RouteName.user,
@@ -176,10 +172,9 @@ final router = GoRouter(
                   if (authBloc is AuthAuthenticatedSuccess) {
                     return HomeScreen(
                       fullName: authBloc.data.email,
-                      isAuth: true,
                     );
                   }
-                  return const HomeScreen(isAuth: false);
+                  return const HomeScreen();
                 }),
           ],
         ),

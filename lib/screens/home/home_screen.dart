@@ -15,6 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../components/widgets/card/image_file_card.dart';
+import '../../features/auth/bloc/auth_bloc.dart';
 import '../../features/home/bloc/image_predict_bloc.dart';
 import '../../features/home/bloc/image_predict_event.dart';
 import '../../features/home/bloc/image_predict_state.dart';
@@ -22,11 +23,11 @@ import '../../injection_container.dart';
 import '../../mock_data/user.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen(
-      {super.key, this.fullName, this.isVip, required this.isAuth});
+  const HomeScreen({
+    super.key,
+    this.fullName,
+  });
   final String? fullName;
-  final bool isAuth;
-  final bool? isVip;
 
   @override
   Widget build(BuildContext context) {
@@ -81,15 +82,7 @@ class HomeScreen extends StatelessWidget {
                   Text('Chọn ảnh để tiến hành đánh giá',
                       style: context.text.titleLarge),
                   const SizedBox(height: AppSizes.spaceBtwItems),
-                  if (fullName != null)
-                    ReviewFruits(
-                      isAuth: isAuth,
-                      isVip: isVip!,
-                    ),
-                  if (fullName == null)
-                    ReviewFruits(
-                      isAuth: isAuth,
-                    ),
+                  ReviewFruits(),
                 ],
               ),
             ),
@@ -103,12 +96,7 @@ class HomeScreen extends StatelessWidget {
 class ReviewFruits extends StatelessWidget {
   const ReviewFruits({
     super.key,
-    this.isVip = false,
-    required this.isAuth,
   });
-
-  final bool isVip;
-  final bool isAuth;
 
   @override
   Widget build(BuildContext context) {
@@ -133,14 +121,16 @@ class ReviewFruits extends StatelessWidget {
     };
 
     void handleImagePredict(bool isCamera) {
-      if (isVip) {
+      final authBloc = context.read<AuthBloc>().state;
+      if (authBloc is AuthAuthenticatedSuccess) {
+        final data = authBloc.data;
+        context.read<ImagePredictBloc>().add(PickImageFromGalleryEvent(
+            isCamera: isCamera, isVip: data.isVip, isAuth: true));
+      } else {
         context
             .read<ImagePredictBloc>()
-            .add(PickImageFromGalleryEvent(isCamera: isCamera, isVip: isVip));
+            .add(PickImageFromGalleryEvent(isCamera: isCamera, isAuth: false));
       }
-      context
-          .read<ImagePredictBloc>()
-          .add(PickImageFromGalleryEvent(isCamera: isCamera));
     }
 
     return Column(

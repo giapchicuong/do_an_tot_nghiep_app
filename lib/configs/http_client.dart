@@ -9,7 +9,7 @@ class DioClient {
       : _dio = Dio(
           BaseOptions(
             baseUrl:
-                'https://ec08-2402-800-63b9-9c38-5890-53c8-1f84-8703.ngrok-free.app/api/v1/',
+                'https://16cd-2402-800-63ef-3481-9c6f-c59b-75fc-48d3.ngrok-free.app/api/v1/',
             headers: {'Content-Type': 'application/json; charset=UTF-8'},
             responseType: ResponseType.json,
             receiveDataWhenStatusError: true,

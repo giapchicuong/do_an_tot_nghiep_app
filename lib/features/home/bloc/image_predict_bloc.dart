@@ -48,7 +48,9 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
 
     if (pickedFile != null) {
       add(PerformPredictionEvent(
-          imageFile: File(pickedFile.path), isVip: event.isVip));
+          imageFile: File(pickedFile.path),
+          isVip: event.isVip,
+          isAuth: event.isAuth));
     } else {
       emit(ImagePredictInitial());
     }
@@ -78,6 +80,8 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
         var input = _processImage(resizedImage);
         var output = List.generate(
             1, (index) => List.filled(AppModel.classLabels.length, 0.0));
+
+        print(input);
 
         _interpreter.run(input, output);
         _parseOutput(
@@ -126,8 +130,12 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
       bool isVip,
       bool isAuth,
       Emitter<ImagePredictState> emit) async {
+    print(output);
     int predictedClass =
         output[0].indexOf(output[0].reduce((a, b) => a > b ? a : b));
+
+    print(predictedClass);
+
     String fruitType = AppModel.classLabels[predictedClass];
     print('Name Fruits: $fruitType');
     print('Name Custom Fruits: ${AppFormatter.formatLabelModel(fruitType)}');
