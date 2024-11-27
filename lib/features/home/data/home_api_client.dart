@@ -1,31 +1,52 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:do_an_tot_nghiep/configs/http_client.dart';
 import 'package:do_an_tot_nghiep/features/home/dtos/result_review_dto.dart';
 import 'package:do_an_tot_nghiep/features/home/dtos/upload_image_dto.dart';
 import 'package:do_an_tot_nghiep/features/home/dtos/upload_image_success_dto.dart';
-import 'package:do_an_tot_nghiep/utils/formatters/formatter.dart';
 
 class HomeApiClient {
   final DioClient dio;
 
   HomeApiClient(this.dio);
 
+  // Future<UploadImageSuccessDto> uploadImage(
+  //     {required UploadImageDto uploadImageDto}) async {
+  //   FormData formData = FormData.fromMap(uploadImageDto.toJson());
+  //   try {
+  //     final response = await dio.post('/upload-image', data: formData);
+  //     final int ec = response.data['EC'];
+  //     if (response.statusCode == 200) {
+  //       if (ec == 0) {
+  //         final responseGet = await dio.get(response.data['DT'],
+  //             options: Options(responseType: ResponseType.bytes));
+  //         return UploadImageSuccessDto(
+  //             imageName:
+  //                 AppFormatter.extractFilenameFromUrl(response.data['DT']),
+  //             image: base64Encode(responseGet.data));
+  //       }
+  //     }
+  //     throw Exception(response.data['EM']);
+  //   } on DioException catch (e) {
+  //     if (e.response != null) {
+  //       throw Exception(e.response!.data['EM']);
+  //     } else {
+  //       throw Exception(e.message);
+  //     }
+  //   }
+  // }
+
   Future<UploadImageSuccessDto> uploadImage(
       {required UploadImageDto uploadImageDto}) async {
     FormData formData = FormData.fromMap(uploadImageDto.toJson());
     try {
-      final response = await dio.post('/upload-image', data: formData);
+      final response = await dio.post(
+          'https://d830-1-53-52-197.ngrok-free.app/api/media-upload/',
+          data: formData);
+      print(response.data);
       final int ec = response.data['EC'];
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         if (ec == 0) {
-          final responseGet = await dio.get(response.data['DT'],
-              options: Options(responseType: ResponseType.bytes));
-          return UploadImageSuccessDto(
-              imageName:
-                  AppFormatter.extractFilenameFromUrl(response.data['DT']),
-              image: base64Encode(responseGet.data));
+          return UploadImageSuccessDto.fromJson(response.data['DT']);
         }
       }
       throw Exception(response.data['EM']);

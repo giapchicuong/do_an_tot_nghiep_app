@@ -18,6 +18,31 @@ class AppFormatter {
     }
   }
 
+  static String getVietnameseName(String fruit) {
+    switch (fruit) {
+      case 'banana':
+        return 'Trái chuối';
+      case 'custardapple':
+        return 'Quả na';
+      case 'dragon':
+        return 'Trái thanh Long';
+      case 'guavas':
+        return 'Trái ổi';
+      case 'mango':
+        return 'Trái xoài';
+      case 'orange':
+        return 'Trái cam';
+      case 'passionfruit':
+        return 'Trái chanh dây';
+      case 'strawberry':
+        return 'Trái dâu tây';
+      case 'waxapple':
+        return 'Trái mận';
+      default:
+        return 'Không xác định';
+    }
+  }
+
   static String formatTime(String value) {
     switch (value) {
       case 'months':

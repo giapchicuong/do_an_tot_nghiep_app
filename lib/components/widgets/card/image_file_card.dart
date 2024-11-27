@@ -38,16 +38,16 @@ class ImageFileCardWidget extends StatelessWidget {
             child: Column(
               children: [
                 AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: isAssetImage
-                      ? Image.asset(file)
-                      : isMemoryImage
-                          ? Image.memory(file)
-                          : Image.file(
-                              file,
-                              fit: BoxFit.cover,
-                            ),
-                ),
+                    aspectRatio: 16 / 9,
+                    child:
+                        isAssetImage ? Image.asset(file) : Image.network(file)
+                    // : isMemoryImage
+                    //     ? Image.memory(file)
+                    //     : Image.file(
+                    //         file,
+                    //         fit: BoxFit.cover,
+                    //       ),
+                    ),
                 //   Title
                 Padding(
                   padding: const EdgeInsets.all(8.0),

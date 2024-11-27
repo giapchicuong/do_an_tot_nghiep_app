@@ -35,8 +35,7 @@ class HomeScreen extends StatelessWidget {
 
     return BlocProvider(
       create: (context) =>
-          ImagePredictBloc(HomeRepository(homeApiClient: sl<HomeApiClient>()))
-            ..add(LoadModelEvent()),
+          ImagePredictBloc(HomeRepository(homeApiClient: sl<HomeApiClient>())),
       child: Scaffold(
         backgroundColor: AppColors.primaryBackground,
         body: SafeArea(
@@ -108,9 +107,9 @@ class ReviewFruits extends StatelessWidget {
           file: AppImages.loading,
         ),
       ImagePredictSuccess() => ImageFileCardWidget(
-          title: imagePredictBloc.result,
-          file: imagePredictBloc.imageRemove,
-          isMemoryImage: true,
+          title:
+              '${imagePredictBloc.nameFruits} - ${imagePredictBloc.valueRating}',
+          file: imagePredictBloc.image,
         ),
       ImagePredictFailure() => const ImageFileCardWidget(
           title: AppText.error,

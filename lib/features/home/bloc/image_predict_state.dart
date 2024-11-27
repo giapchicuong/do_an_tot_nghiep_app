@@ -1,6 +1,3 @@
-import 'dart:io';
-import 'dart:typed_data';
-
 abstract class ImagePredictState {}
 
 class ImagePredictInitial extends ImagePredictState {}
@@ -8,11 +5,14 @@ class ImagePredictInitial extends ImagePredictState {}
 class ImagePredictLoading extends ImagePredictState {}
 
 class ImagePredictSuccess extends ImagePredictState {
-  final String result;
-  final File image;
-  final Uint8List? imageRemove;
+  final String nameFruits;
+  final String valueRating;
+  final String image;
 
-  ImagePredictSuccess(this.result, this.image, this.imageRemove);
+  ImagePredictSuccess(
+      {required this.nameFruits,
+      required this.valueRating,
+      required this.image});
 }
 
 class ImagePredictFailure extends ImagePredictState {

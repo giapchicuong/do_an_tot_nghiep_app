@@ -20,7 +20,7 @@ class HomeRepository {
           await homeApiClient.uploadImage(uploadImageDto: uploadImageDto);
       return Success(uploadImageSuccessDto);
     } catch (e) {
-      log('$e');
+      log('Error $e');
       return Failure('$e');
     }
   }
