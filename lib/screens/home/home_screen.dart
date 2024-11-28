@@ -108,7 +108,7 @@ class ReviewFruits extends StatelessWidget {
         ),
       ImagePredictSuccess() => ImageFileCardWidget(
           title:
-              '${imagePredictBloc.nameFruits} - ${imagePredictBloc.valueRating}',
+              '${imagePredictBloc.nameFruits} - độ tươi ${imagePredictBloc.valueRating}',
           file: imagePredictBloc.image,
         ),
       ImagePredictFailure() => const ImageFileCardWidget(

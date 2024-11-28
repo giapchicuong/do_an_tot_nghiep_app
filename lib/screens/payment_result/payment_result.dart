@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../common/widgets/images/rounded_image.dart';
+import '../../features/auth/bloc/auth_bloc.dart';
 import '../../features/user/data/user_api_client.dart';
 import '../../features/user/data/user_repository.dart';
 import '../../injection_container.dart';
@@ -164,6 +165,7 @@ class PaymentSuccess extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () async {
+                context.read<AuthBloc>().add(AuthAuthenticatedStarted());
                 context.pushReplacement(RouteName.home);
               },
               child: const Text('Trở về trang home'),

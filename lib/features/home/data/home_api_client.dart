@@ -4,6 +4,8 @@ import 'package:do_an_tot_nghiep/features/home/dtos/result_review_dto.dart';
 import 'package:do_an_tot_nghiep/features/home/dtos/upload_image_dto.dart';
 import 'package:do_an_tot_nghiep/features/home/dtos/upload_image_success_dto.dart';
 
+import '../../../utils/constants/api_constants.dart';
+
 class HomeApiClient {
   final DioClient dio;
 
@@ -39,10 +41,8 @@ class HomeApiClient {
       {required UploadImageDto uploadImageDto}) async {
     FormData formData = FormData.fromMap(uploadImageDto.toJson());
     try {
-      final response = await dio.post(
-          'https://d830-1-53-52-197.ngrok-free.app/api/media-upload/',
-          data: formData);
-      print(response.data);
+      final response =
+          await dio.post('${AppApi.apiSecond}/media-upload/', data: formData);
       final int ec = response.data['EC'];
       if (response.statusCode == 201) {
         if (ec == 0) {

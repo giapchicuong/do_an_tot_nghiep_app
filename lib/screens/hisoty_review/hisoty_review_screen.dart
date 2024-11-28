@@ -4,6 +4,7 @@ import 'package:do_an_tot_nghiep/features/history/bloc/history_user_event.dart';
 import 'package:do_an_tot_nghiep/features/history/bloc/history_user_state.dart';
 import 'package:do_an_tot_nghiep/features/history/data/history_api_client.dart';
 import 'package:do_an_tot_nghiep/features/history/data/history_repository.dart';
+import 'package:do_an_tot_nghiep/utils/constants/api_constants.dart';
 import 'package:do_an_tot_nghiep/utils/constants/sizes.dart';
 import 'package:do_an_tot_nghiep/utils/constants/text_strings.dart';
 import 'package:do_an_tot_nghiep/utils/formatters/formatter.dart';
@@ -86,8 +87,9 @@ class HistoryContent extends StatelessWidget {
                 title: data.ratingName,
                 header:
                     'Ngày: ${AppFormatter.getFormattedDateDayMonthYearVN(data.createdAt)}',
-                subText: 'Độ tươi: ${data.ratingValue}%',
-                image: data.imageUrl,
+                subText: 'Độ tươi: ${data.ratingValue}',
+                image:
+                    '${AppApi.apiSecondNoApi}/media/images-no-bg/${AppFormatter.extractFilenameFromUrl(data.imageUrl)}',
                 onTap: () {},
               );
             },

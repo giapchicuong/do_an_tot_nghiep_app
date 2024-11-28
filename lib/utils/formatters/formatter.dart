@@ -43,6 +43,12 @@ class AppFormatter {
     }
   }
 
+  static String formatIsVip(String value) {
+    int percentage = int.tryParse(value.replaceAll('%', '')) ?? 0;
+
+    return percentage >= 50 ? '100%' : '0%';
+  }
+
   static String formatTime(String value) {
     switch (value) {
       case 'months':

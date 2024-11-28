@@ -13,9 +13,11 @@ class ImageFileCardWidget extends StatelessWidget {
     required this.file,
     this.isAssetImage = false,
     this.isMemoryImage = false,
+    this.subTitle,
   });
 
   final String title;
+  final String? subTitle;
   final dynamic file;
   final bool isAssetImage;
   final bool isMemoryImage;
@@ -58,6 +60,12 @@ class ImageFileCardWidget extends StatelessWidget {
                         style: context.text.headlineMedium!
                             .copyWith(color: AppColors.primary),
                       ),
+                      if (subTitle != null)
+                        Text(
+                          subTitle ?? '',
+                          style: context.text.headlineMedium!
+                              .copyWith(color: AppColors.primary),
+                        ),
                     ],
                   ),
                 ),

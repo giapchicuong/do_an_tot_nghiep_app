@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:do_an_tot_nghiep/utils/constants/api_constants.dart';
 
 import 'auth_interceptor.dart';
 
@@ -8,8 +9,7 @@ class DioClient {
   DioClient()
       : _dio = Dio(
           BaseOptions(
-            baseUrl:
-                'https://5e36-2402-800-63ef-3481-5908-497d-b8b2-6329.ngrok-free.app/api/v1/',
+            baseUrl: AppApi.apiFirst,
             headers: {'Content-Type': 'application/json; charset=UTF-8'},
             responseType: ResponseType.json,
             receiveDataWhenStatusError: true,

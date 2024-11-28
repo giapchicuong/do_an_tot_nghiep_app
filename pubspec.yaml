@@ -32,7 +32,7 @@ dependencies:
   flutter_easyloading: ^3.0.5
   tflite_flutter: ^0.11.0
   image_picker: ^1.1.2
-  image: ^3.0.1
+  image: 4.3.0
   flutter_rating: ^2.0.2
   fluttertoast: ^8.2.8
   get_it: ^8.0.2
@@ -46,7 +46,16 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.14.1
 
+flutter_launcher_icons:
+  android: "laucher_icon"
+  #  ios: true
+  image_path: "assets/logo.jpg"
+  adaptive_icon_background: "#ffffff"
+  min_sdk_android: 21
+  adaptive_icon_foreground: "assets/logo.jpg"
+#  remove_alpha_ios: true
 flutter:
 
   uses-material-design: true

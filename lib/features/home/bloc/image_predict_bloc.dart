@@ -337,16 +337,28 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
       final result = await homeRepository.uploadImage(
           uploadImageDto: UploadImageDto(image: dataImagePost));
 
-      return (switch (result) {
-        Success(data: final data) => emit(
-            ImagePredictSuccess(
+      return switch (result) {
+        Success(data: final data) => {
+            emit(ImagePredictSuccess(
               nameFruits: AppFormatter.getVietnameseName(data.nameFruits),
-              valueRating: data.valueRating,
+              valueRating: event.isVip
+                  ? data.valueRating
+                  : AppFormatter.formatIsVip(data.valueRating),
               image: data.image,
-            ),
-          ),
-        Failure() => emit(ImagePredictFailure(result.message))
-      });
+            )),
+            if (event.isAuth)
+              {
+                await homeRepository.postResultReview(
+                  ratingValue: event.isVip
+                      ? data.valueRating
+                      : AppFormatter.formatIsVip(data.valueRating),
+                  ratingName: AppFormatter.getVietnameseName(data.nameFruits),
+                  imageUrl: AppFormatter.extractFilenameFromUrl(data.image),
+                ),
+              },
+          },
+        Failure() => emit(ImagePredictFailure(result.message)),
+      };
     } else {
       emit(ImagePredictInitial());
     }
