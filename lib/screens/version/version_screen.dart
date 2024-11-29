@@ -68,44 +68,71 @@ class VersionScreen extends StatelessWidget {
               children: [
                 const InforVersion(),
                 const SizedBox(height: AppSizes.spaceBtwSections),
-                const OptionRating(),
+                BlocBuilder<UserRatingGetBloc, UserRatingGetState>(
+                    builder: (context, state) {
+                  if (state is UserRatingGetSuccess) {
+                    return state.data.isRating
+                        ? const SizedBox.shrink()
+                        : const OptionRating();
+                  }
+                  return Container();
+                }),
                 const SizedBox(height: AppSizes.spaceBtwSections / 2),
-                SizedBox(
-                  width: double.infinity,
-                  child: BlocBuilder<TotalRatingAvgRatingGetBloc,
-                      TotalRatingAvgRatingGetState>(
-                    builder: (context, totalRatingState) {
-                      final state = context.watch<UserRatingGetBloc>().state;
+                BlocBuilder<UserRatingGetBloc, UserRatingGetState>(
+                    builder: (context, state) {
+                  if (state is UserRatingGetSuccess) {
+                    return state.data.isRating
+                        ? const SizedBox.shrink()
+                        : Column(
+                            children: [
+                              SizedBox(
+                                width: double.infinity,
+                                child: BlocBuilder<TotalRatingAvgRatingGetBloc,
+                                    TotalRatingAvgRatingGetState>(
+                                  builder: (context, totalRatingState) {
+                                    final state = context
+                                        .watch<UserRatingGetBloc>()
+                                        .state;
 
-                      if (totalRatingState is TotalRatingAvgRatingGetSuccess) {
-                        final versionId = totalRatingState
-                            .data.versionId; // lấy versionId từ state
-                        if (state is UserRatingGetSuccess) {
-                          if (state.reviewOptions.isNotEmpty &&
-                              state.rating > 0) {
-                            return ElevatedButton.icon(
-                              onPressed: () {
-                                context.read<UserRatingGetBloc>().add(
-                                      UserRatingAddStarted(
-                                        userId: userId,
-                                        versionId: versionId,
-                                      ),
+                                    if (totalRatingState
+                                        is TotalRatingAvgRatingGetSuccess) {
+                                      final versionId =
+                                          totalRatingState.data.versionId;
+                                      if (state is UserRatingGetSuccess) {
+                                        if (state.reviewOptions.isNotEmpty &&
+                                            state.rating > 0) {
+                                          return ElevatedButton.icon(
+                                            onPressed: () {
+                                              context
+                                                  .read<UserRatingGetBloc>()
+                                                  .add(
+                                                    UserRatingAddStarted(
+                                                      userId: userId,
+                                                      versionId: versionId,
+                                                    ),
+                                                  );
+                                            },
+                                            label: const Text(
+                                                AppText.submitSendRating),
+                                          );
+                                        }
+                                      }
+                                    }
+                                    return ElevatedButton.icon(
+                                      onPressed:
+                                          null, // nếu state không thành công, disable button
+                                      label:
+                                          const Text(AppText.submitSendRating),
                                     );
-                              },
-                              label: const Text(AppText.submitSendRating),
-                            );
-                          }
-                        }
-                      }
-                      return ElevatedButton.icon(
-                        onPressed:
-                            null, // nếu state không thành công, disable button
-                        label: const Text(AppText.submitSendRating),
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(height: AppSizes.spaceBtwSections),
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: AppSizes.spaceBtwSections),
+                            ],
+                          );
+                  }
+                  return Container();
+                }),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,11 +178,11 @@ class ListUserRating extends StatelessWidget {
           builder: (context, state) {
         if (state is UserRatingGetSuccess) {
           return ListView.builder(
-              itemCount: state.data.length,
+              itemCount: state.data.listRating.length,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                final data = state.data[index];
+                final data = state.data.listRating[index];
                 return UserRatingItem(
                   email: data.email,
                   versionName: data.nameVersion,
@@ -319,7 +346,7 @@ class InforVersion extends StatelessWidget {
                         ),
                         const SizedBox(height: AppSizes.spaceBtwItems / 2),
                         Text(
-                          data.totalRating,
+                          data.totalRating.toString(),
                           style: context.text.headlineSmall!.copyWith(
                             fontSize: AppSizes.fontSizeLg,
                             color: AppColors.subText,

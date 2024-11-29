@@ -1,15 +1,28 @@
-List<UserRatingSuccessDto> listUserRatingSuccessDto(List<dynamic> data) =>
-    List<UserRatingSuccessDto>.from(
-        data.map((e) => UserRatingSuccessDto.fromJson(e)));
-
 class UserRatingSuccessDto {
-  final String email;
-  final int rating;
-  final String nameVersion;
-  final String reviewOptions;
-  final DateTime createdAt;
+  bool isRating;
+  List<ListRating> listRating;
 
   UserRatingSuccessDto({
+    required this.isRating,
+    required this.listRating,
+  });
+
+  factory UserRatingSuccessDto.fromJson(Map<String, dynamic> json) =>
+      UserRatingSuccessDto(
+        isRating: json["isRating"],
+        listRating: List<ListRating>.from(
+            json["listRating"].map((x) => ListRating.fromJson(x))),
+      );
+}
+
+class ListRating {
+  String email;
+  int rating;
+  String nameVersion;
+  String reviewOptions;
+  DateTime createdAt;
+
+  ListRating({
     required this.email,
     required this.rating,
     required this.nameVersion,
@@ -17,12 +30,11 @@ class UserRatingSuccessDto {
     required this.createdAt,
   });
 
-  factory UserRatingSuccessDto.fromJson(Map<String, dynamic> json) =>
-      UserRatingSuccessDto(
-        email: json['email'],
-        rating: json['rating'],
-        nameVersion: json['nameVersion'],
-        reviewOptions: json['reviewOptions'],
-        createdAt: DateTime.parse(json['createdAt']),
+  factory ListRating.fromJson(Map<String, dynamic> json) => ListRating(
+        email: json["email"],
+        rating: json["rating"],
+        nameVersion: json["nameVersion"],
+        reviewOptions: json["reviewOptions"],
+        createdAt: DateTime.parse(json["createdAt"]),
       );
 }

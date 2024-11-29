@@ -1,5 +1,5 @@
 class TotalRatingAvgRatingGetSuccessDto {
-  final String totalRating;
+  final int totalRating;
   final String avgRating;
   final int versionId;
   final String nameVersion;

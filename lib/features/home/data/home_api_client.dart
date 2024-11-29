@@ -41,8 +41,8 @@ class HomeApiClient {
       {required UploadImageDto uploadImageDto}) async {
     FormData formData = FormData.fromMap(uploadImageDto.toJson());
     try {
-      final response =
-          await dio.post('${AppApi.apiSecond}/media-upload/', data: formData);
+      final response = await dio.post('${AppApi.apiSecond}/api/media-upload/',
+          data: formData);
       final int ec = response.data['EC'];
       if (response.statusCode == 201) {
         if (ec == 0) {

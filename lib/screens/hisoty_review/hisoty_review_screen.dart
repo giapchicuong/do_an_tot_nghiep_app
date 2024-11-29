@@ -89,7 +89,7 @@ class HistoryContent extends StatelessWidget {
                     'Ngày: ${AppFormatter.getFormattedDateDayMonthYearVN(data.createdAt)}',
                 subText: 'Độ tươi: ${data.ratingValue}',
                 image:
-                    '${AppApi.apiSecondNoApi}/media/images-no-bg/${AppFormatter.extractFilenameFromUrl(data.imageUrl)}',
+                    '${AppApi.apiSecond}/media/images-no-bg/${AppFormatter.extractFilenameFromUrl(data.imageUrl)}',
                 onTap: () {},
               );
             },

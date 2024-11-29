@@ -27,12 +27,12 @@ class VersionApiClient {
     }
   }
 
-  Future<List<UserRatingSuccessDto>> getUserRating() async {
+  Future<UserRatingSuccessDto> getUserRating() async {
     try {
       final response = await dio.get('/reviewVersion/getListUserRating');
       final int ec = response.data['EC'];
       if (ec == 0) {
-        return listUserRatingSuccessDto(response.data['DT']);
+        return UserRatingSuccessDto.fromJson(response.data['DT']);
       }
       throw Exception(response.data['EM']);
     } on DioException catch (e) {
@@ -62,7 +62,7 @@ class VersionApiClient {
     }
   }
 
-  Future<List<UserRatingSuccessDto>> addOptionRating(
+  Future<UserRatingSuccessDto> addOptionRating(
       {required UserRatingAdDto data}) async {
     try {
       final response = await dio.post(
@@ -71,7 +71,7 @@ class VersionApiClient {
       );
       final int ec = response.data['EC'];
       if (ec == 0) {
-        return listUserRatingSuccessDto(response.data['DT']);
+        return UserRatingSuccessDto.fromJson(response.data['DT']);
       }
       throw Exception(response.data['EM']);
     } on DioException catch (e) {

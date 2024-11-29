@@ -8,7 +8,7 @@ class UserRatingGetInitial extends UserRatingGetState {}
 class UserRatingGetInProgress extends UserRatingGetState {}
 
 class UserRatingGetSuccess extends UserRatingGetState {
-  final List<UserRatingSuccessDto> data;
+  final UserRatingSuccessDto data;
   final List<ReviewOptions> reviewOptions;
   final int rating;
   final bool isRating;

@@ -22,7 +22,7 @@ class VersionRepository {
     }
   }
 
-  Future<Result<List<UserRatingSuccessDto>>> getUserRating() async {
+  Future<Result<UserRatingSuccessDto>> getUserRating() async {
     try {
       final data = await versionApiClient.getUserRating();
       return Success(data);
@@ -43,7 +43,7 @@ class VersionRepository {
     }
   }
 
-  Future<Result<List<UserRatingSuccessDto>>> addOptionRating(
+  Future<Result<UserRatingSuccessDto>> addOptionRating(
       {required UserRatingAdDto useRatingAddDto}) async {
     try {
       final data =
