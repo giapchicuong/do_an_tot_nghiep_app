@@ -80,7 +80,7 @@ class HistoryContent extends StatelessWidget {
         if (state is HistoryUserGetSuccess) {
           return AppGridLayout(
             itemCount: state.historyUserSuccessDto.length,
-            mainAxisExtent: 180,
+            mainAxisExtent: 220,
             itemBuilder: (_, index) {
               final data = state.historyUserSuccessDto[index];
               return ProductCardWidget(
