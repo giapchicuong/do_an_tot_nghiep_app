@@ -50,14 +50,16 @@ class AppSnackBar extends StatelessWidget {
           color: isSuccess ? AppColors.success : AppColors.error,
         ),
         const SizedBox(width: AppSizes.sm),
-        Text(
-          messsage,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                fontSize: AppSizes.fontSizeLg,
-                color: AppColors.black,
-              ),
+        Expanded(
+          child: Text(
+            messsage,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                  fontSize: AppSizes.fontSizeLg,
+                  color: AppColors.black,
+                ),
+          ),
         ),
       ],
     );

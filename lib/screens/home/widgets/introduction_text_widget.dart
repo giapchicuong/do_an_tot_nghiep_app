@@ -27,7 +27,7 @@ class IntroductionText extends StatelessWidget {
                 text: 'độ tươi',
                 style: context.text.headlineLarge!.copyWith(
                   fontSize: AppSizes.fontSize2xl,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
               const WidgetSpan(

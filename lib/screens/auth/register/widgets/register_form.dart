@@ -24,6 +24,8 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
+  bool isShowPassword = false;
+  bool isShowRePassword = false;
   final _formKey = GlobalKey<FormState>();
   late final _fullNameController = TextEditingController(text: '');
   late final _emailController = TextEditingController(text: '');
@@ -46,6 +48,18 @@ class _RegisterFormState extends State<RegisterForm> {
 
   void _handleRetry() {
     context.read<AuthBloc>().add(AuthStarted());
+  }
+
+  void _handleShowPassword() {
+    setState(() {
+      isShowPassword = !isShowPassword;
+    });
+  }
+
+  void _handleReShowPassword() {
+    setState(() {
+      isShowRePassword = !isShowRePassword;
+    });
   }
 
   Widget _buildInitialRegisterWidget() {
@@ -96,15 +110,15 @@ class _RegisterFormState extends State<RegisterForm> {
             TextFormField(
               controller: _passwordController,
               validator: (value) => AppValidator.validatePassword(value),
-              obscureText: true,
+              obscureText: !isShowPassword,
               enableSuggestions: false,
               autocorrect: false,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: AppText.password,
-                prefixIcon: Icon(
-                  Iconsax.direct_right_copy,
-                ),
-                suffixIcon: Icon(Iconsax.eye_slash_copy),
+                prefixIcon: const Icon(Iconsax.direct_right_copy),
+                suffixIcon: IconButton(
+                    onPressed: _handleShowPassword,
+                    icon: const Icon(Iconsax.eye_slash_copy)),
               ),
             ),
             const SizedBox(height: AppSizes.spaceBtwItems),
@@ -116,15 +130,18 @@ class _RegisterFormState extends State<RegisterForm> {
                 value,
               ),
               controller: _rePasswordController,
-              obscureText: true,
+              obscureText: !isShowRePassword,
               enableSuggestions: false,
               autocorrect: false,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: AppText.rePassword,
-                prefixIcon: Icon(
+                prefixIcon: const Icon(
                   Iconsax.direct_right_copy,
                 ),
-                suffixIcon: Icon(Iconsax.eye_slash_copy),
+                suffixIcon: IconButton(
+                  onPressed: _handleReShowPassword,
+                  icon: const Icon(Iconsax.eye_slash_copy),
+                ),
               ),
             ),
             const SizedBox(height: AppSizes.spaceBtwItems),
