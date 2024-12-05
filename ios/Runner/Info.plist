@@ -9,10 +9,11 @@
     <key>NSPhotoLibraryUsageDescription</key>
     <string>alow library</string>
 
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Do An Tot Nghiep</string>
+	<string>Do An Tot Nghiep App</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -20,7 +21,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>do_an_tot_nghiep</string>
+	<string>do_an_tot_nghiep_app</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -31,38 +32,6 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>CFBundleURLTypes</key>
-        	<array>
-        		<dict>
-        			<key>CFBundleTypeRole</key>
-        			<string>Editor</string>
-        			<key>CFBundleURLName</key>
-        			<string>com.flutterzalopay.flutterZaloSdkExample</string>
-        			<key>CFBundleURLSchemes</key>
-        			<array>
-        				<string>demozpdk</string>
-        			</array>
-        		</dict>
-        		<dict>
-        			<key>CFBundleTypeRole</key>
-        			<string>Editor</string>
-        			<key>CFBundleURLName</key>
-        			<string>org.reactjs.native.example.demozpdk</string>
-        			<key>CFBundleURLSchemes</key>
-        			<array>
-        				<string>demozpdk</string>
-        			</array>
-        		</dict>
-        	</array>
-    <key>LSApplicationQueriesSchemes</key>
-    	<array>
-    		<string>zalo</string>
-    		<string>zalopay</string>
-    		<string>zalopay.api.v2</string>
-    	</array>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<key>NSCameraUsageDescription</key>
-	<key>NSMicrophoneUsageDescription</key>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
