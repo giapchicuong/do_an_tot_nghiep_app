@@ -119,8 +119,16 @@ class VersionScreen extends StatelessWidget {
                                       }
                                     }
                                     return ElevatedButton.icon(
-                                      onPressed:
-                                          null, // nếu state không thành công, disable button
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              WidgetStateProperty.all(
+                                                  AppColors.grey)),
+                                      onPressed: () {
+                                        AppShowSnackBar.show(
+                                            isSuccess: false,
+                                            context: context,
+                                            message: AppText.dialogRating);
+                                      },
                                       label:
                                           const Text(AppText.submitSendRating),
                                     );

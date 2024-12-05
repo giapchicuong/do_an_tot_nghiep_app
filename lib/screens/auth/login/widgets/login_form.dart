@@ -23,6 +23,7 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  bool isShowPassword = false;
   final _formKey = GlobalKey<FormState>();
   late final _authState = context.read<AuthBloc>().state;
 
@@ -58,6 +59,12 @@ class _LoginFormState extends State<LoginForm> {
   void _handleGoRegister() {
     context.push(RouteName.register);
     context.read<AuthBloc>().add(AuthStarted());
+  }
+
+  void _handleShowPassword() {
+    setState(() {
+      isShowPassword = !isShowPassword;
+    });
   }
 
   Widget _buildInProgressLoginWidget() {
@@ -137,15 +144,17 @@ class _LoginFormState extends State<LoginForm> {
             TextFormField(
               controller: _passwordController,
               validator: (value) => AppValidator.validatePassword(value),
-              obscureText: true,
+              obscureText: !isShowPassword,
               enableSuggestions: false,
               autocorrect: false,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: AppText.password,
-                prefixIcon: Icon(
+                prefixIcon: const Icon(
                   Iconsax.direct_right_copy,
                 ),
-                suffixIcon: Icon(Iconsax.eye_slash_copy),
+                suffixIcon: IconButton(
+                    onPressed: _handleShowPassword,
+                    icon: const Icon(Iconsax.eye_slash_copy)),
               ),
             ),
             const SizedBox(height: AppSizes.sm),

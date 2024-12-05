@@ -30,6 +30,7 @@ class AppText {
   static const String registerSuccess = "Đăng ký tài khoản thành công";
   static const String ratingComent = "Đánh giá thành công";
   static const String dialogUpdate = "Bạn đã nâng cấp VIP";
+  static const String dialogRating = "Vui lòng chọn sao và nhãn đánh giá";
 
   static const String numberPerson = "Số người đánh giá";
   static const String trending = "Thịnh hành";
