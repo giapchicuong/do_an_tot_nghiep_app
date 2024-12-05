@@ -3,6 +3,7 @@ import 'package:do_an_tot_nghiep/utils/constants/colors.dart';
 import 'package:do_an_tot_nghiep/utils/constants/image_strings.dart';
 import 'package:do_an_tot_nghiep/utils/constants/sizes.dart';
 import 'package:do_an_tot_nghiep/utils/theme/theme_ext.dart';
+import 'package:do_an_tot_nghiep/utils/validators/validation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -122,6 +123,7 @@ class _LoginFormState extends State<LoginForm> {
             // Email
             TextFormField(
               controller: _emailController,
+              validator: (value) => AppValidator.validateEmail(value),
               decoration: const InputDecoration(
                 labelText: AppText.email,
                 prefixIcon: Icon(
@@ -134,6 +136,7 @@ class _LoginFormState extends State<LoginForm> {
             // Password
             TextFormField(
               controller: _passwordController,
+              validator: (value) => AppValidator.validatePassword(value),
               obscureText: true,
               enableSuggestions: false,
               autocorrect: false,

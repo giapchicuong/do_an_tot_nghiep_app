@@ -12,6 +12,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 import '../../../../features/auth/bloc/auth_bloc.dart';
 import '../../../../utils/constants/text_strings.dart';
+import '../../../../utils/validators/validation.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({
@@ -56,6 +57,7 @@ class _RegisterFormState extends State<RegisterForm> {
             // FullName
             TextFormField(
               controller: _fullNameController,
+              validator: (value) => AppValidator.validateName(value),
               decoration: const InputDecoration(
                 labelText: AppText.fullName,
                 prefixIcon: Icon(
@@ -67,6 +69,7 @@ class _RegisterFormState extends State<RegisterForm> {
             // Phone
             TextFormField(
               controller: _phoneController,
+              validator: (value) => AppValidator.validatePhoneNumber(value),
               decoration: const InputDecoration(
                 labelText: AppText.phone,
                 prefixIcon: Icon(
@@ -79,6 +82,7 @@ class _RegisterFormState extends State<RegisterForm> {
             // Email
             TextFormField(
               controller: _emailController,
+              validator: (value) => AppValidator.validateEmail(value),
               decoration: const InputDecoration(
                 labelText: AppText.email,
                 prefixIcon: Icon(
@@ -91,6 +95,7 @@ class _RegisterFormState extends State<RegisterForm> {
             // Password
             TextFormField(
               controller: _passwordController,
+              validator: (value) => AppValidator.validatePassword(value),
               obscureText: true,
               enableSuggestions: false,
               autocorrect: false,
@@ -106,6 +111,10 @@ class _RegisterFormState extends State<RegisterForm> {
 
             // RePassword
             TextFormField(
+              validator: (value) => AppValidator.validateRePassword(
+                _passwordController.text,
+                value,
+              ),
               controller: _rePasswordController,
               obscureText: true,
               enableSuggestions: false,
