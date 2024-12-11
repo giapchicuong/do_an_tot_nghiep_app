@@ -295,11 +295,14 @@
 //     }
 //   }
 // }
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:do_an_tot_nghiep/features/home/data/home_repository.dart';
 import 'package:do_an_tot_nghiep/features/home/dtos/upload_image_dto.dart';
 import 'package:do_an_tot_nghiep/utils/formatters/formatter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 
@@ -322,11 +325,16 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
         source: event.isCamera ? ImageSource.camera : ImageSource.gallery);
 
     if (pickedFile != null) {
-      final mimeType = lookupMimeType(pickedFile.path);
-      String fileName = pickedFile.path.split('/').last;
+      File file = File(pickedFile.path);
+
+      // File resultFile = compressAndResizeImage(file);
+      File resultFile = await compressFile(file);
+      final mimeType = lookupMimeType(resultFile.path);
+      String fileName = resultFile.path.split('/').last;
       String fileNameWithoutSpaces = fileName.replaceAll(' ', '');
+
       MultipartFile dataImagePost = await MultipartFile.fromFile(
-          pickedFile.path,
+          resultFile.path,
           filename: fileNameWithoutSpaces,
           contentType: mimeType != null
               ? DioMediaType.parse(mimeType)
@@ -363,4 +371,65 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
       emit(ImagePredictInitial());
     }
   }
+
+  Future<File> compressFile(File file) async {
+    try {
+      final filePath = file.absolute.path;
+
+      // Tìm vị trí định dạng file
+      final lastIndex = filePath.lastIndexOf(RegExp(r'\.(jpg|jpeg|png)'));
+      if (lastIndex == -1) throw Exception("Unsupported file format");
+
+      final splitted = filePath.substring(0, lastIndex);
+      final outPath = "${splitted}_compressed${filePath.substring(lastIndex)}";
+
+      // Nén file
+      var result = await FlutterImageCompress.compressAndGetFile(
+        minWidth: 800,
+        minHeight: 800,
+        filePath,
+        outPath,
+        quality: 100,
+      );
+
+      if (result == null) throw Exception("File compression failed");
+
+      return File(result.path);
+    } catch (e) {
+      print("Error compressing file: $e");
+      rethrow;
+    }
+  }
+  //
+  // File compressAndResizeImage(File file) {
+  //   img.Image? image = img.decodeImage(file.readAsBytesSync());
+  //
+  //   int width;
+  //   int height;
+  //
+  //   if (image!.width > image.height) {
+  //     width = 800;
+  //     height = (image.height / image.width * 800).round();
+  //   } else {
+  //     height = 800;
+  //     width = (image.width / image.height * 800).round();
+  //   }
+  //
+  //   img.Image resizedImage =
+  //       img.copyResize(image, width: width, height: height);
+  //
+  //   List<int> compressedBytes = img.encodeJpg(resizedImage, quality: 100);
+  //
+  //   String originalFilename = p.basenameWithoutExtension(file.path);
+  //   String extension = p.extension(file.path);
+  //   String randomString = Random().nextInt(1000000).toString();
+  //   String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+  //   String uniqueFilename =
+  //       '$originalFilename-$randomString-$timestamp$extension';
+  //
+  //   File compressedFile = File(p.join(p.dirname(file.path), uniqueFilename));
+  //   compressedFile.writeAsBytesSync(compressedBytes);
+  //
+  //   return compressedFile;
+  // }
 }

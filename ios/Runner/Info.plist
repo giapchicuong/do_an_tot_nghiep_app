@@ -14,6 +14,10 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>We need access to your photo library to compress images.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>We need access to your camera to pick images.</string>
 	<key>CFBundleName</key>
 	<string>AIFreshify</string>
 	<key>CFBundlePackageType</key>
