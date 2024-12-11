@@ -378,7 +378,7 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
 
       // Tìm vị trí định dạng file
       final lastIndex =
-          filePath.lastIndexOf(RegExp(r'\.(jpg|jpeg|png|webp|heic)'));
+          filePath.lastIndexOf(RegExp(r'\.(jpg|jpeg|png|webp|heic|heif)'));
 
       if (lastIndex == -1) throw Exception("Unsupported file format");
 
