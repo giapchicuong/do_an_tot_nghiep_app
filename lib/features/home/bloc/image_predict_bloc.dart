@@ -385,11 +385,11 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
 
       // Nén file
       var result = await FlutterImageCompress.compressAndGetFile(
-        minWidth: 400,
-        minHeight: 400,
+        minWidth: 800,
+        minHeight: 800,
         filePath,
         outPath,
-        quality: 50,
+        quality: 100,
       );
 
       if (result == null) throw Exception("File compression failed");
