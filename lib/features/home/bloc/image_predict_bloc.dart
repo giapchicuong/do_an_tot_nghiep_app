@@ -296,6 +296,7 @@
 //   }
 // }
 import 'dart:io';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:do_an_tot_nghiep/features/home/data/home_repository.dart';
@@ -309,6 +310,9 @@ import 'package:mime/mime.dart';
 import '../../result_type.dart';
 import 'image_predict_event.dart';
 import 'image_predict_state.dart';
+import 'dart:io';
+import 'package:image/image.dart' as img;
+import 'package:path/path.dart' as p;
 
 class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
   ImagePredictBloc(this.homeRepository) : super(ImagePredictInitial()) {
@@ -329,6 +333,7 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
 
       // File resultFile = compressAndResizeImage(file);
       File resultFile = await compressFile(file);
+      print(resultFile);
       final mimeType = lookupMimeType(resultFile.path);
       String fileName = resultFile.path.split('/').last;
       String fileNameWithoutSpaces = fileName.replaceAll(' ', '');
@@ -380,7 +385,7 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
       final lastIndex =
           filePath.lastIndexOf(RegExp(r'\.(jpg|jpeg|png|webp|heic|heif)'));
 
-      if (lastIndex == -1) throw Exception("Unsupported file format");
+      if (lastIndex == -1) print("Unsupported file format");
 
       final splitted = filePath.substring(0, lastIndex);
       final outPath = "${splitted}_compressed${filePath.substring(lastIndex)}";
@@ -391,7 +396,7 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
         minHeight: 800,
         filePath,
         outPath,
-        quality: 100,
+        quality: 80,
         format: CompressFormat.jpeg,
       );
 
