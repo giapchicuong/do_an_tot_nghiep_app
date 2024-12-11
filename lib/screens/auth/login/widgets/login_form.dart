@@ -154,7 +154,9 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 suffixIcon: IconButton(
                     onPressed: _handleShowPassword,
-                    icon: const Icon(Iconsax.eye_slash_copy)),
+                    icon: Icon(!isShowPassword
+                        ? Iconsax.eye_slash_copy
+                        : Iconsax.eye)),
               ),
             ),
             const SizedBox(height: AppSizes.sm),

@@ -118,7 +118,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 prefixIcon: const Icon(Iconsax.direct_right_copy),
                 suffixIcon: IconButton(
                     onPressed: _handleShowPassword,
-                    icon: const Icon(Iconsax.eye_slash_copy)),
+                    icon: Icon(!isShowPassword? Iconsax.eye_slash_copy: Iconsax.eye)),
               ),
             ),
             const SizedBox(height: AppSizes.spaceBtwItems),
@@ -140,7 +140,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
                 suffixIcon: IconButton(
                   onPressed: _handleReShowPassword,
-                  icon: const Icon(Iconsax.eye_slash_copy),
+                  icon:  Icon(!isShowRePassword ? Iconsax.eye_slash_copy:Iconsax.eye),
                 ),
               ),
             ),
