@@ -377,7 +377,9 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
       final filePath = file.absolute.path;
 
       // Tìm vị trí định dạng file
-      final lastIndex = filePath.lastIndexOf(RegExp(r'\.(jpg|jpeg|png)'));
+      final lastIndex =
+          filePath.lastIndexOf(RegExp(r'\.(jpg|jpeg|png|webp|heic)'));
+
       if (lastIndex == -1) throw Exception("Unsupported file format");
 
       final splitted = filePath.substring(0, lastIndex);
@@ -390,6 +392,7 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
         filePath,
         outPath,
         quality: 100,
+        format: CompressFormat.jpeg,
       );
 
       if (result == null) throw Exception("File compression failed");
@@ -400,36 +403,4 @@ class ImagePredictBloc extends Bloc<ImagePredictEvent, ImagePredictState> {
       rethrow;
     }
   }
-  //
-  // File compressAndResizeImage(File file) {
-  //   img.Image? image = img.decodeImage(file.readAsBytesSync());
-  //
-  //   int width;
-  //   int height;
-  //
-  //   if (image!.width > image.height) {
-  //     width = 800;
-  //     height = (image.height / image.width * 800).round();
-  //   } else {
-  //     height = 800;
-  //     width = (image.width / image.height * 800).round();
-  //   }
-  //
-  //   img.Image resizedImage =
-  //       img.copyResize(image, width: width, height: height);
-  //
-  //   List<int> compressedBytes = img.encodeJpg(resizedImage, quality: 100);
-  //
-  //   String originalFilename = p.basenameWithoutExtension(file.path);
-  //   String extension = p.extension(file.path);
-  //   String randomString = Random().nextInt(1000000).toString();
-  //   String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-  //   String uniqueFilename =
-  //       '$originalFilename-$randomString-$timestamp$extension';
-  //
-  //   File compressedFile = File(p.join(p.dirname(file.path), uniqueFilename));
-  //   compressedFile.writeAsBytesSync(compressedBytes);
-  //
-  //   return compressedFile;
-  // }
 }
